@@ -1,27 +1,24 @@
-name: Patch and Build
-on: [ push ]
+name: Patch n build
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Git Repository
-        uses: actions/checkout@v2
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
-      - name: Set up JDK
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
         uses: actions/setup-java@v2.3.0
         with:
-          distribution: 'zulu'
-          java-version: '16'
-          cache: 'gradle'
-      - name: Configure Git User Details
+          distribution: temurin
+          java-version: 16
+          cache: gradle
+      - name: Configure Git user details
         run: git config --global user.email "actions@github.com" && git config --global user.name "Github Actions"
-      - name: Apply Patches
-        run: ./gradlew applyPatches --stacktrace
-      - name: Paperclipping
-        run: ./gradlew paperclip --stacktrace
+      - name: Apply patches
+        run: ./gradlew applyPatches
+      - name: Paperclippin
+        run: ./gradlew paperclipJar
       - name: artifact
         uses: actions/upload-artifact@v2
         with:
           name: paperclip-inside
-          path: build/libs/*paperclip*
+          path: build/libs/Fiadelity-1.17.1-R0.1-SNAPSHOT.jar
