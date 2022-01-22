@@ -1,0 +1,27 @@
+name: blak-smok
+on: [ push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v2
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v2.3.0
+        with:
+          distribution: 'zulu'
+          java-version: '16'
+          cache: 'gradle'
+      - name: Configure Git User Details
+        run: git config --global user.email "actions@github.com" && git config --global user.name "Github Actions"
+      - name: Apply Patches
+        run: ./gradlew applyPatches --stacktrace
+      - name: the typical tar
+        run: tar -czf c.tar.gz Fiadelity-*
+      - name: artifact xd
+        uses: actions/upload-artifact@v2
+        with:
+          name: blak-smok
+          path: c.tar.gz
