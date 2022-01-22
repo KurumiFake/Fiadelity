@@ -1,0 +1,5 @@
+[submodule "Hyalus-API"]
+	path = Hyalus-API
+	
+[submodule "Hyalus-Server"]
+	path = Hyalus-Server
