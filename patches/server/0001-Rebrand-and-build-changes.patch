@@ -1,0 +1,176 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Sat, 22 Jan 2022 22:50:16 +0700
+Subject: [PATCH] Rebrand and build changes
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 3823eaa2facbe9cb1dfaa81801e3686228a53909..2b5f7578b71502c01e01ecbb039c236bc4eeaefe 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -22,7 +22,7 @@ repositories {
+ }
+ 
+ dependencies {
+-    implementation(project(":Airplane-API")) // Airplane // Paper
++    implementation(project(":Fiadelity-API")) // Fiadelity // Airplane // Paper
+     implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
+     // Paper start
+     implementation("org.jline:jline-terminal-jansi:3.21.0")
+@@ -45,18 +45,18 @@ dependencies {
+         // This includes junit transitively for whatever reason
+         isTransitive = false
+     }
+-    runtimeOnly("org.xerial:sqlite-jdbc:3.34.0")
++    runtimeOnly("org.xerial:sqlite-jdbc:3.36.0.3")
+     runtimeOnly("mysql:mysql-connector-java:8.0.23") // Paper
+     runtimeOnly("com.lmax:disruptor:3.4.4") // Paper
+ 
+-    runtimeOnly("org.apache.maven:maven-resolver-provider:3.8.1")
+-    runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.0")
+-    runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.0")
++    runtimeOnly("org.apache.maven:maven-resolver-provider:3.8.4")
++    runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.3")
++    runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.3")
+ 
+-    implementation("io.netty:netty-all:4.1.65.Final") // Paper
++    implementation("io.netty:netty-all:4.1.73.Final") // Paper
+ 
+     implementation("net.fabricmc:mapping-io:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
+-    implementation("com.velocitypowered:velocity-native:1.1.0-SNAPSHOT") // Paper
++    implementation("com.velocitypowered:velocity-native:1.1.10-SNAPSHOT") // Paper
+ 
+     implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
+     implementation("org.yaml:snakeyaml:1.28")
+@@ -68,7 +68,7 @@ dependencies {
+     implementation("io.sentry:sentry:5.4.0") // Airplane
+ 
+     testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
+-    testImplementation("junit:junit:4.13.1")
++    testImplementation("junit:junit:4.13.2")
+     testImplementation("org.hamcrest:hamcrest-library:1.3")
+ }
+ 
+@@ -85,7 +85,7 @@ tasks.jar {
+             "Main-Class" to "org.bukkit.craftbukkit.Main",
+             "Implementation-Title" to "CraftBukkit",
+             "Implementation-Version" to "git-Paper-$implementationVersion",
+-            "Implementation-Version" to "git-Airplane-$implementationVersion", // Airplane
++            "Implementation-Version" to "git-Fiadelity-$implementationVersion", // Fiadelity
+             "Implementation-Vendor" to date, // Paper
+             "Specification-Title" to "Bukkit",
+             "Specification-Version" to project.version,
+diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
+index f5d01bce4d5547b4aeca96b7962b2090f47ea541..c47a34a09e30f297dc51bb78ab2f9f32af5cec11 100644
+--- a/src/main/java/com/destroystokyo/paper/Metrics.java
++++ b/src/main/java/com/destroystokyo/paper/Metrics.java
+@@ -593,7 +593,7 @@ public class Metrics {
+             boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
+             // Only start Metrics, if it's enabled in the config
+             if (config.getBoolean("enabled", true)) {
+-                Metrics metrics = new Metrics("Airplane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page // Airplane
++                Metrics metrics = new Metrics("Fiadelity", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page // Fiadelity
+ 
+                 metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
+                     String minecraftVersion = Bukkit.getVersion();
+@@ -603,7 +603,7 @@ public class Metrics {
+ 
+                 metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
+                 metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : "offline"));
+-                metrics.addCustomChart(new Metrics.SimplePie("airplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
++                metrics.addCustomChart(new Metrics.SimplePie("fiadelity_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
+ 
+                 metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
+                     Map<String, Map<String, Integer>> map = new HashMap<>();
+diff --git a/src/main/java/gg/airplane/AirplaneVersionFetcher.java b/src/main/java/gg/airplane/AirplaneVersionFetcher.java
+index e79ec7919e6cf160fec1cb981d85f0f33c316b41..ac5e0d408191fe0ce12855ec8dc10d7376520dfb 100644
+--- a/src/main/java/gg/airplane/AirplaneVersionFetcher.java
++++ b/src/main/java/gg/airplane/AirplaneVersionFetcher.java
+@@ -31,8 +31,8 @@ public class AirplaneVersionFetcher implements VersionFetcher {
+     private static final Logger LOGGER = Logger.getLogger("AirplaneVersionFetcher");
+     private static final HttpClient client = HttpClient.newHttpClient();
+ 
+-    private static final URI JENKINS_URI = URI.create("https://ci.tivy.ca/job/Airplane-1.17/lastSuccessfulBuild/buildNumber");
+-    private static final String GITHUB_FORMAT = "https://api.github.com/repos/TECHNOVE/Airplane/compare/ver/1.17...%s";
++    // private static final URI JENKINS_URI = URI.create("https://ci.tivy.ca/job/Airplane-1.17/lastSuccessfulBuild/buildNumber");
++    private static final String GITHUB_FORMAT = "https://api.github.com/repos/KurumiFake/Fiadelity/compare/ver/1.17...%s"; // Fiadelity
+ 
+     private static final HttpResponse.BodyHandler<JsonObject> JSON_OBJECT_BODY_HANDLER = responseInfo -> HttpResponse.BodySubscribers.mapping(
+             HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8),
+@@ -54,18 +54,18 @@ public class AirplaneVersionFetcher implements VersionFetcher {
+         } else {
+             final String versionString = parts[2];
+ 
+-            try {
++            /*try { // Fiadelity - ill never hav a jenkins tbh
+                 component = this.fetchJenkinsVersion(Integer.parseInt(versionString));
+-            } catch (NumberFormatException e) {
+-                component = this.fetchGithubVersion(versionString.substring(1, versionString.length() - 1));
+-            }
++            } catch (NumberFormatException e) {*/
++            component = this.fetchGithubVersion(versionString.substring(1, versionString.length() - 1));
++            
+         }
+ 
+         final @Nullable Component history = this.getHistory();
+         return history != null ? Component.join(JoinConfiguration.noSeparators(), component, Component.newline(), this.getHistory()) : component;
+     }
+ 
+-    private @NotNull Component fetchJenkinsVersion(final int versionNumber) {
++    /*private @NotNull Component fetchJenkinsVersion(final int versionNumber) { // Fiadelity - ill never hav a jenkins tbh
+         final HttpRequest request = HttpRequest.newBuilder(JENKINS_URI).build();
+         try {
+             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+@@ -87,7 +87,7 @@ public class AirplaneVersionFetcher implements VersionFetcher {
+             LOGGER.log(Level.WARNING, "Failed to look up version from Jenkins", e);
+             return text("Failed to retrieve version from server.", RED);
+         }
+-    }
++    }*/
+ 
+     // Based off code contributed by Techcable <Techcable@outlook.com> in Paper/GH-65
+     private @NotNull Component fetchGithubVersion(final @NotNull String hash) {
+@@ -112,7 +112,7 @@ public class AirplaneVersionFetcher implements VersionFetcher {
+     private @NotNull Component getResponseMessage(final int versionDiff) {
+         return switch (Math.max(-1, Math.min(1, versionDiff))) {
+             case -1 ->
+-                text("You are running an unsupported version of Airplane.", RED);
++                text("You are running an unsupported version of Fiadelity.", RED);
+             case 0 ->
+                 text("You are on the latest version!", GREEN);
+             default ->
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index 1788d79ea489e446d3d9f541693d4ba3dfc26015..8dbdee4820deba557efd5db9a9a5a98e3dfd26b6 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -1,29 +1,9 @@
+ package org.bukkit.craftbukkit.util;
+ 
+-import java.io.IOException;
+-import java.io.InputStream;
+-import java.util.Properties;
+-import java.util.logging.Level;
+-import java.util.logging.Logger;
+ import org.bukkit.Bukkit;
+ 
+ public final class Versioning {
+     public static String getBukkitVersion() {
+-        String result = "Unknown-Version";
+-
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/gg.airplane/airplane-api/pom.properties"); // Tuinity // Airplane
+-        Properties properties = new Properties();
+-
+-        if (stream != null) {
+-            try {
+-                properties.load(stream);
+-
+-                result = properties.getProperty("version");
+-            } catch (IOException ex) {
+-                Logger.getLogger(Versioning.class.getName()).log(Level.SEVERE, "Could not get Bukkit version!", ex);
+-            }
+-        }
+-
+-        return result;
++        return "1.17.1-R0.1-SNAPSHOT"; // Fiadelity - hardcode BukkitVersion
+     }
+ }
