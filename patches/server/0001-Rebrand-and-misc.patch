@@ -67,7 +67,7 @@ index 3823eaa2facbe9cb1dfaa81801e3686228a53909..4e49f5bb7e4ef3aec3a9d1c477066683
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index f5d01bce4d5547b4aeca96b7962b2090f47ea541..c47a34a09e30f297dc51bb78ab2f9f32af5cec11 100644
+index f5d01bce4d5547b4aeca96b7962b2090f47ea541..47dc6277dd666ac4d134ec47a308e48a00f0d57e 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
@@ -84,12 +84,12 @@ index f5d01bce4d5547b4aeca96b7962b2090f47ea541..c47a34a09e30f297dc51bb78ab2f9f32
                  metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
                  metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : "offline"));
 -                metrics.addCustomChart(new Metrics.SimplePie("airplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
-+                metrics.addCustomChart(new Metrics.SimplePie("fiadelity_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
++                metrics.addCustomChart(new Metrics.SimplePie("fiadelity_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Fiadelity
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/gg/airplane/AirplaneVersionFetcher.java b/src/main/java/gg/airplane/AirplaneVersionFetcher.java
-index e79ec7919e6cf160fec1cb981d85f0f33c316b41..ac5e0d408191fe0ce12855ec8dc10d7376520dfb 100644
+index e79ec7919e6cf160fec1cb981d85f0f33c316b41..3809a187df08e9ed43e39703cef6a42633a5a5a8 100644
 --- a/src/main/java/gg/airplane/AirplaneVersionFetcher.java
 +++ b/src/main/java/gg/airplane/AirplaneVersionFetcher.java
 @@ -31,8 +31,8 @@ public class AirplaneVersionFetcher implements VersionFetcher {
@@ -99,7 +99,7 @@ index e79ec7919e6cf160fec1cb981d85f0f33c316b41..ac5e0d408191fe0ce12855ec8dc10d73
 -    private static final URI JENKINS_URI = URI.create("https://ci.tivy.ca/job/Airplane-1.17/lastSuccessfulBuild/buildNumber");
 -    private static final String GITHUB_FORMAT = "https://api.github.com/repos/TECHNOVE/Airplane/compare/ver/1.17...%s";
 +    // private static final URI JENKINS_URI = URI.create("https://ci.tivy.ca/job/Airplane-1.17/lastSuccessfulBuild/buildNumber");
-+    private static final String GITHUB_FORMAT = "https://api.github.com/repos/KurumiFake/Fiadelity/compare/ver/1.17...%s"; // Fiadelity
++    private static final String GITHUB_FORMAT = "https://api.github.com/repos/KurumiFake/Fiadelity/compare/ver/1.17.1...%s"; // Fiadelity
  
      private static final HttpResponse.BodyHandler<JsonObject> JSON_OBJECT_BODY_HANDLER = responseInfo -> HttpResponse.BodySubscribers.mapping(
              HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8),
