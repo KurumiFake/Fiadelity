@@ -25,7 +25,7 @@ index 3e17f6131bf590d7c4a16b79c1c145cb4f565bc9..e1233fa58d068448d0accef7a7f6725f
          this.id = buf.readVarInt();
          this.packedItems = SynchedEntityData.unpack(buf);
 diff --git a/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java b/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java
-index 4df12454001f0de5f358c88d876e34c35a736c42..719e70b0f7cb8b431ac860058ba4b0048a5384e2 100644
+index 4df12454001f0de5f358c88d876e34c35a736c42..91192a644885db5122f1bd4dac89df6ab2989181 100644
 --- a/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java
 +++ b/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java
 @@ -136,6 +136,11 @@ public class SynchedEntityData {
@@ -127,13 +127,13 @@ index 4df12454001f0de5f358c88d876e34c35a736c42..719e70b0f7cb8b431ac860058ba4b004
 +        }
 +
 +        public SynchedEntityData.DataItem<T> copy(boolean foreign) {
-+            return new SynchedEntityData.DataItem<>(this.accessor, this.accessor.getSerializer().copy((foreign && th>
++            return new SynchedEntityData.DataItem<>(this.accessor, this.accessor.getSerializer().copy((foreign && this.foreignValue != null ? this.foreignValue : this.value)));
 +        }
 +        // Slice end
      }
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
-index a453aac607f9b38f0bf90038ff2d8071687c4bae..ac5b49b59dd7912f414ca4e6819e1d1f930ef1f8 100644
+index a453aac607f9b38f0bf90038ff2d8071687c4bae..4ffd8aff2d3a2f77ec898eacad067f8d5816f54e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerEntity.java
 +++ b/src/main/java/net/minecraft/server/level/ServerEntity.java
 @@ -370,7 +370,19 @@ public class ServerEntity {
@@ -142,14 +142,14 @@ index a453aac607f9b38f0bf90038ff2d8071687c4bae..ac5b49b59dd7912f414ca4e6819e1d1f
          if (datawatcher.isDirty()) {
 -            this.broadcastAndSend(new ClientboundSetEntityDataPacket(this.entity.getId(), datawatcher, false));
 +            // Slice start
-+            ClientboundSetEntityDataPacket dataPacket = new ClientboundSetEntityDataPacket(this.entity.getId(), data>
++            ClientboundSetEntityDataPacket dataPacket = new ClientboundSetEntityDataPacket(this.entity.getId(), datawatcher, false);
 +            if (this.entity instanceof ServerPlayer serverPlayer) {
 +                serverPlayer.connection.send(dataPacket);
 +            }
 +
 +            // Get the packedData that the original packet has, and then determine if any of those are changed in
 +            // the foreign version. If null, nothing to notify foreign trackers about.
-+            List<SynchedEntityData.DataItem<?>> dirtyItems = datawatcher.packForeignDirty(dataPacket.getUnpackedData>
++            List<SynchedEntityData.DataItem<?>> dirtyItems = datawatcher.packForeignDirty(dataPacket.getUnpackedData());
 +            if (dirtyItems != null) {
 +                this.broadcast(new ClientboundSetEntityDataPacket(this.entity.getId(), dirtyItems));
 +            }
