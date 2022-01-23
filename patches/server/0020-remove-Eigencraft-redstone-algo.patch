@@ -6,7 +6,7 @@ Subject: [PATCH] remove Eigencraft redstone algo
 Reverts Eigencraft redstone from Paper in order for it to be replaced with alternate-current's redstone implementation
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 0906a2d410e11cb352b13e5c0390560085b8f254..396d3c2678d344f4fb9bc0c702afc0ec6e71e507 100644
+index 00e302a278c1aef17596a5f1b91230614b13ceb2..7b21391e5955bca028ec8a690ca410937dc4cc15 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -85,16 +85,6 @@ public class PaperWorldConfig {

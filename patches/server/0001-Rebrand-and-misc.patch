@@ -145,6 +145,19 @@ index e79ec7919e6cf160fec1cb981d85f0f33c316b41..ac5e0d408191fe0ce12855ec8dc10d73
              case 0 ->
                  text("You are on the latest version!", GREEN);
              default ->
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 7120a77ec93009faf1f18fd6c9bc020de66a5f73..691a44d81ed497a8677404508171874afda346d3 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1729,7 +1729,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
+     @DontObfuscate
+     public String getServerModName() {
+-        return "Airplane"; // Airplane // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        return "Fiadelity"; // Fiadelity // Airplane // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+     }
+ 
+     public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 index 1788d79ea489e446d3d9f541693d4ba3dfc26015..8dbdee4820deba557efd5db9a9a5a98e3dfd26b6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
