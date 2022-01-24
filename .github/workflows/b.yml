@@ -1,4 +1,4 @@
-name: Patch n build
+name: Build
 on: [push]
 jobs:
   build:
