@@ -5,13 +5,13 @@ Subject: [PATCH] (Purpur) Lagging threshold
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index c551010f84ac5d3ebc626c253a8f8282924152c4..a10a671c39c52c48babac17ebe81b2d77237c167 100644
+index c551010f84ac5d3ebc626c253a8f8282924152c4..af89ded836ce8fc6dfe1ee93872dbaa5b106918e 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2117,5 +2117,16 @@ public final class Bukkit {
-     @NotNull
+@@ -2118,4 +2118,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
+     }
 +
 +    // Purpur start
 +    /**
@@ -23,7 +23,6 @@ index c551010f84ac5d3ebc626c253a8f8282924152c4..a10a671c39c52c48babac17ebe81b2d7
 +        return server.isLagging();
 +    }
 +    // Purpur end
-     }
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
 index 1d1fe3b7341629695de62ff3110b5563f6daee39..8a4e8b82f5b2cb55f70ab21adbc60a5b6b70c22b 100644
