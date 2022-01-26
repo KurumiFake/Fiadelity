@@ -1,0 +1,55 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Wed, 26 Jan 2022 22:54:10 +0700
+Subject: [PATCH] (Yatopia) Configurable criterion triggers
+
+
+diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
+index 6e472b724ed6e2a463f8d77cfd8e89198a9d1c1f..03f7afd775dee6fedf2bda9fbd5ecd176294034c 100644
+--- a/src/main/java/me/kurumifake/FiadelityConfig.java
++++ b/src/main/java/me/kurumifake/FiadelityConfig.java
+@@ -114,4 +114,14 @@ public class FiadelityConfig {
+         config.addDefault(path, def);
+         return config.getString(path, config.getString(path));
+     }
++
++    public static boolean criterionTriggerEnterBlock = true;
++    public static boolean criterionTriggerTick = true;
++    public static boolean criterionTriggerLocation = true;
++    private static void criterionTriggers() {
++        criterionTriggerEnterBlock = getBoolean("criterion-trigger.enter-block", criterionTriggerEnterBlock);
++        criterionTriggerTick = getBoolean("criterion-trigger.tick", criterionTriggerTick);
++        criterionTriggerLocation = getBoolean("criterion-trigger.location", criterionTriggerLocation);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 5635b7fbfbc27e2042eaf4af1fe139bde514e7ab..4b383c5618a211a7d65eccb8f9b9d8be363c5530 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -611,6 +611,7 @@ public class ServerPlayer extends Player {
+ 
+     @Override
+     protected void onInsideBlock(BlockState state) {
++        if (me.kurumifake.FiadelityConfig.criterionTriggerEnterBlock) // Fiadelity
+         CriteriaTriggers.ENTER_BLOCK.trigger(this, state);
+     }
+ 
+@@ -657,7 +658,7 @@ public class ServerPlayer extends Player {
+             }
+         }
+ 
+-        CriteriaTriggers.TICK.trigger(this);
++        if (me.kurumifake.FiadelityConfig.criterionTriggerTick) { CriteriaTriggers.TICK.trigger(this); } // Fiadelity
+         if (this.levitationStartPos != null) {
+             CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
+         }
+@@ -732,7 +733,7 @@ public class ServerPlayer extends Player {
+                 this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
+             }
+ 
+-            if (this.tickCount % 20 == 0) {
++            if (me.kurumifake.FiadelityConfig.criterionTriggerLocation && this.tickCount % 20 == 0) { // Fiadelity
+                 CriteriaTriggers.LOCATION.trigger(this);
+             }
+ 
