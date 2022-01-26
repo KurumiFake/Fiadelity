@@ -40,10 +40,10 @@ index cd332a416bc56227d1d197ab1bc892ac90181b3a..0681c7092847927fd1159f20494d008b
           }
          // Airplane end
 diff --git a/src/main/java/net/pl3x/purpur/PurpurWorldConfig.java b/src/main/java/net/pl3x/purpur/PurpurWorldConfig.java
-index 8bc89d48695c816a1db77f9cdffd05f35afea92a..2912fd94d17c837f33d29d7745a47f106d6f1ff0 100644
+index 72e4196710b745776c33fa78677c9192cadfe860..ad3f574706d406855dac5aded9036dfed7438b58 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurWorldConfig.java
-@@ -93,4 +93,11 @@ public class PurpurWorldConfig {
+@@ -85,4 +85,11 @@ public class PurpurWorldConfig {
          final Map<String, Object> value = PurpurConfig.getMap("world-settings." + worldName + "." + path, null);
          return value.isEmpty() ? fallback : value;
      }
