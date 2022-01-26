@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Wed, 26 Jan 2022 06:34:26 +0000
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Tue, 23 Jul 2019 10:07:16 -0500
 Subject: [PATCH] (Purpur) Lagging threshold
 
+Original code by PurpurMC, licensed under MIT.
+You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index 95d8952097ccde7f1104b0bc078a690134958fd0..e4e161cc9e100524f8893f79de3dba35dbab0026 100644

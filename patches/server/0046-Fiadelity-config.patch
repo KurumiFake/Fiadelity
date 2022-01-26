@@ -1,0 +1,179 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Wed, 26 Jan 2022 20:39:37 +0700
+Subject: [PATCH] Fiadelity config
+
+
+diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6e472b724ed6e2a463f8d77cfd8e89198a9d1c1f
+--- /dev/null
++++ b/src/main/java/me/kurumifake/FiadelityConfig.java
+@@ -0,0 +1,117 @@
++wpackage me.kurumifake;
++
++import com.google.common.base.Throwables;
++import java.io.File;
++import java.io.IOException;
++import java.lang.reflect.InvocationTargetException;
++import java.lang.reflect.Method;
++import java.lang.reflect.Modifier;
++import java.util.List;
++import java.util.concurrent.TimeUnit;
++import java.util.logging.Level;
++import java.util.regex.Pattern;
++import org.bukkit.Bukkit;
++import org.bukkit.configuration.InvalidConfigurationException;
++import org.bukkit.configuration.file.YamlConfiguration;
++
++public class FiadelityConfig {
++
++    public static File CONFIG_FILE;
++    private static final String HEADER = "Configuration file for Fiadelity.\n"
++                        + "Fiadelity does some **experimental** and possibly unstable stuff\n"
++                        + "You've been warned\n";
++    /*========================================================================*/
++    public static YamlConfiguration config;
++    public static int version; // since we're remapping sidestreams' configs we need this public
++    public static boolean verbose; // since we're remapping sidestreams' configs we need this public
++    /*========================================================================*/
++
++    public static void init(File configFile) {
++        CONFIG_FILE = configFile;
++        config = new YamlConfiguration();
++        try {
++            config.load(CONFIG_FILE);
++        } catch (IOException ex) {
++        } catch (InvalidConfigurationException ex) {
++            Bukkit.getLogger().log(Level.SEVERE, "Could not load fiadelity.yml, please correct your syntax errors", ex);
++            throw Throwables.propagate(ex);
++        }
++        config.options().header(HEADER);
++        config.options().copyDefaults(true);
++        verbose = getBoolean("verbose", false);
++
++        version = getInt("config-version", 1);
++        set("config-version", 1);
++        readConfig(FiadelityConfig.class, null);
++    }
++
++    protected static void logError(String s) {
++        Bukkit.getLogger().severe(s);
++    }
++
++    protected static void log(String s) {
++        if (verbose) {
++            Bukkit.getLogger().info(s);
++        }
++    }
++
++    static void readConfig(Class<?> clazz, Object instance) {
++        for (Method method : clazz.getDeclaredMethods()) {
++            if (Modifier.isPrivate(method.getModifiers())) {
++                if (method.getParameterTypes().length == 0 && method.getReturnType() == Void.TYPE) {
++                    try {
++                        method.setAccessible(true);
++                        method.invoke(instance);
++                    } catch (InvocationTargetException ex) {
++                        throw Throwables.propagate(ex.getCause());
++                    } catch (Exception ex) {
++                        Bukkit.getLogger().log(Level.SEVERE, "Error invoking " + method, ex);
++                    }
++                }
++            }
++        }
++
++        try {
++            config.save(CONFIG_FILE);
++        } catch (IOException ex) {
++            Bukkit.getLogger().log(Level.SEVERE, "Could not save " + CONFIG_FILE, ex);
++        }
++    }
++
++    private static final Pattern SPACE = Pattern.compile(" ");
++    private static final Pattern NOT_NUMERIC = Pattern.compile("[^-\\d.]");
++
++
++    private static void set(String path, Object val) {
++        config.set(path, val);
++    }
++
++    private static boolean getBoolean(String path, boolean def) {
++        config.addDefault(path, def);
++        return config.getBoolean(path, config.getBoolean(path));
++    }
++
++    private static double getDouble(String path, double def) {
++        config.addDefault(path, def);
++        return config.getDouble(path, config.getDouble(path));
++    }
++
++    private static float getFloat(String path, float def) {
++        return (float) getDouble(path, (double) def);
++    }
++
++    private static int getInt(String path, int def) {
++        config.addDefault(path, def);
++        return config.getInt(path, config.getInt(path));
++    }
++
++    private static <T> List<T> getList(String path, List<T> def) {
++        config.addDefault(path, def);
++        return (List<T>) config.getList(path, config.getList(path));
++    }
++
++    private static String getString(String path, String def) {
++        config.addDefault(path, def);
++        return config.getString(path, config.getString(path));
++    }
++}
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index b089eaced634931ed4946a296183c6d18d7d13ab..dfa20c3d035dd03d909d911dda75418e3f52f181 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -230,6 +230,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         }
+         thread.start(); // Paper - start console thread after MinecraftServer.console & PaperConfig are initialized
+         com.destroystokyo.paper.PaperConfig.registerCommands();
++        // Fiadelity start
++        try {
++            me.kurumifake.FiadelityConfig.init((java.io.File) options.valueOf("fiadelity-settings"));
++        } catch (Exception e) {
++            DedicatedServer.LOGGER.error("Unable to load server configuration", e);
++            return false;
++        }
++        // Fiadelity end
+         // Purpur start
+         try {
+             net.pl3x.purpur.PurpurConfig.init((java.io.File) options.valueOf("purpur-settings"));
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 5516411db5a8296c5f5e7055b8ace9e55bb198a9..83acca50de77d71b797965f1dd8faa6920046162 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -925,6 +925,7 @@ public final class CraftServer implements Server {
+         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
+         com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
+         net.pl3x.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
++        me.kurumifake.FiadelityConfig.init((File) console.options.valueOf("fiadelity-settings")); // Fiadelity
+         me.titaniumtown.JettPackConfig.init((File) console.options.valueOf("jettpack-settings")); // JettPack
+         for (ServerLevel world : this.console.getAllLevels()) {
+             // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index e0ad53fd0617cfe629b83857e61b37b9e9936b69..12d4c6364cca4f8a5aabd4c1370c967a3ebf2c9d 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -155,6 +155,14 @@ public class Main {
+                     .describedAs("Yml file");
+                 // Purpur end
+ 
++                // Fiadelity start
++                acceptsAll(asList("fiadelity", "fiadelity-settings"), "File for fiadelity settings")
++                        .withRequiredArg()
++                        .ofType(File.class)
++                        .defaultsTo(new File("fiadelity.yml"))
++                        .describedAs("Yml file");
++                // Fiadelity end
++
+                 // JettPack start
+                 acceptsAll(asList("jettpack", "jettpack-settings"), "File for jettpack settings")
+                         .withRequiredArg()

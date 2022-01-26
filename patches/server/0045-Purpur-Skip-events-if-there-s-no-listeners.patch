@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Wed, 26 Jan 2022 07:09:04 +0000
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Sat, 4 Apr 2020 03:07:59 -0500
 Subject: [PATCH] (Purpur) Skip events if there's no listeners
 
+Original code by PurpurMC, licensed under MIT.
+You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
 index 39fd4819428d5ed5f1d173396bda31c93314cade..b1b92df2e10facdc2f371fe20df91a7d49efeb58 100644

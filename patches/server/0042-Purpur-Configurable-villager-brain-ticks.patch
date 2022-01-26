@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Wed, 26 Jan 2022 06:48:41 +0000
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Tue, 23 Jul 2019 08:28:21 -0500
 Subject: [PATCH] (Purpur) Configurable villager brain ticks
 
+Original code by PurpurMC, licensed under MIT.
+You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 index cd332a416bc56227d1d197ab1bc892ac90181b3a..0681c7092847927fd1159f20494d008bddea45f9 100644

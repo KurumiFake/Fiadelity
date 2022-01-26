@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Wed, 26 Jan 2022 07:01:09 +0000
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Sat, 6 Jul 2019 17:00:04 -0500
 Subject: [PATCH] (Purpur) Dont send useless entity packets
 
+Original code by PurpurMC, licensed under MIT.
+You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
 index 4ffd8aff2d3a2f77ec898eacad067f8d5816f54e..b5c561f6e946d19e7638b6265af7806ee43ce113 100644
