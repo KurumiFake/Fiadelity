@@ -5,6 +5,26 @@ Subject: [PATCH] Better handling of async tasks
 
 Replaces niche/one time use threadpools in other areas by instead using `asyncExecutor` in `MCUtil` This patch also adds a system of flushing small async tasks (hence the variable name of `smallAsyncTasks`) in the `asyncExecutor` threadpool.
 
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index 0766f272068248175bc929a145bafaf9efc8978d..39fd4819428d5ed5f1d173396bda31c93314cade 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -350,7 +350,14 @@ public class Commands {
+         // CraftBukkit start
+         // Register Vanilla commands into builtRoot as before
+         // Paper start - Async command map building
+-        net.minecraft.server.MCUtil.scheduleAsyncTask(() -> this.sendAsync(player));
++        // Jettpack start
++        net.minecraft.server.MCUtil.smallAsyncTasks.add(new Runnable() {
++            public void run() {
++                sendAsync(player);
++            }
++        });
++        // Jettpack end
++
+     }
+ 
+     private void sendAsync(ServerPlayer player) {
 diff --git a/src/main/java/net/minecraft/server/MCUtil.java b/src/main/java/net/minecraft/server/MCUtil.java
 index b5be0486d1cffe60808948b4b0bfd709664b2ae4..043d52f5e4672ad37b16a078b670d5e8065827d9 100644
 --- a/src/main/java/net/minecraft/server/MCUtil.java
