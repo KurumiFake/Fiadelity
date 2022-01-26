@@ -5,7 +5,7 @@ Subject: [PATCH] dependencies
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 92b612126a6bac0b89198a92bbb73b742ec9d064..6cac95c32953629608d39ff222391c4586073ae2 100644
+index 92b612126a6bac0b89198a92bbb73b742ec9d064..5711ebcca13fd1bd00193c5c85dc766fbd9e2833 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -26,26 +26,27 @@ configurations.api {
@@ -51,7 +51,7 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..6cac95c32953629608d39ff222391c45
  
      // Paper start - add checker
 -    val checkerAnnotations = "org.checkerframework:checker-qual:3.18.0"
-+    val checkerAnnotations = "org.checkerframework:checker-qual:3.21.1"
++    val checkerAnnotations = "org.checkerframework:checker-qual:3.18.1"
      compileOnlyApi(checkerAnnotations)
      testCompileOnly(checkerAnnotations)
      // Paper end

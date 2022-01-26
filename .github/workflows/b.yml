@@ -16,7 +16,7 @@ jobs:
       - name: Apply patches
         run: ./gradlew applyPatches
       - name: Paperclippin
-        run: ./gradlew paperclipJar
+        run: ./gradlew paperclipJar --info
       - name: artifact
         uses: actions/upload-artifact@v2
         with:
