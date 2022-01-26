@@ -6,11 +6,11 @@ Subject: [PATCH] Fiadelity config
 
 diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6e472b724ed6e2a463f8d77cfd8e89198a9d1c1f
+index 0000000000000000000000000000000000000000..25028e6add80c4732b4b6f0cdf48ab4946ef1f89
 --- /dev/null
 +++ b/src/main/java/me/kurumifake/FiadelityConfig.java
 @@ -0,0 +1,117 @@
-+wpackage me.kurumifake;
++package me.kurumifake;
 +
 +import com.google.common.base.Throwables;
 +import java.io.File;
