@@ -1,11 +1,15 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Wed, 26 Jan 2022 22:54:10 +0700
+From: Mykyta Komarnytskyy <nkomarn@hotmail.com>
+Date: Sat, 24 Oct 2020 21:08:17 -0500
 Subject: [PATCH] (Yatopia) Configurable criterion triggers
 
+This patch adds toggles for three criterion triggers that are called every tick. These can be very unnecessary, and especially in the case of CriterionTriggerEnterBlock, quite heavy.
+
+Original code by YatopiaMC, licensed under MIT
+You can find the original code on https://github.com/YatopiaMC/Yatopia
 
 diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
-index 6e472b724ed6e2a463f8d77cfd8e89198a9d1c1f..03f7afd775dee6fedf2bda9fbd5ecd176294034c 100644
+index 25028e6add80c4732b4b6f0cdf48ab4946ef1f89..17314f5c14b5e93efc8f44387cb990293fb39aa5 100644
 --- a/src/main/java/me/kurumifake/FiadelityConfig.java
 +++ b/src/main/java/me/kurumifake/FiadelityConfig.java
 @@ -114,4 +114,14 @@ public class FiadelityConfig {

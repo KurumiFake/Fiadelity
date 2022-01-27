@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Wed, 26 Jan 2022 22:31:39 +0700
+From: Bjarne Koll <lynxplay101@gmail.com>
+Date: Thu, 9 Dec 2021 01:53:30 +0100
 Subject: [PATCH] (KTP) Optimize spigot event bus
 
+Original code by lynxplay, licensed under GNU General Public License v3.0
+You can find the original code on https://github.com/lynxplay/ktp
 
 diff --git a/src/main/java/org/bukkit/plugin/RegisteredListener.java b/src/main/java/org/bukkit/plugin/RegisteredListener.java
 index 419aec56b0e3fa8bcec2ea7f340caa3456b57d00..8530d926931a54ed1300c40cd1e0908b2d9b594d 100644

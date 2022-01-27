@@ -1,9 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Wed, 26 Jan 2022 23:20:42 +0700
+From: James Lyne <jim+github@not-null.co.uk>
+Date: Mon, 7 Dec 2020 17:52:36 +0000
 Subject: [PATCH] (Purpur) Spread out and optimise player list ticksSpread out
  and optimise player list ticks
 
+Original code by PurpurMC, licensed under MIT
+You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
 index d2db6bff35c7afb7a9c3d3b7eded417bb4e95eaf..ae459b16034454453d7b10322b5e11f8f83c820e 100644
