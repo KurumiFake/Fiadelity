@@ -23,7 +23,7 @@
 * [Purpur](https://github.com/PurpurMC/Purpur)
 * [Slice](https://github.com/Cryptite/Slice)
 
-Has some optimizations from [Lithium](https://github.com/jellysquid3/lithium-fabric) (JettPack's port)
+Has some optimizations from [Lithium](https://github.com/jellysquid3/lithium-fabric) and [Hydrogen](https://github.com/CaffeineMC/hydrogen-fabric) (JettPack's port), [C2ME](https://github.com/RelativityMC/C2ME-fabric) (Mirai's port)
 
 ## Downloads
 
