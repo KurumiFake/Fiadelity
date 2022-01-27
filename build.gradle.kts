@@ -23,6 +23,9 @@ subprojects {
     tasks.withType<JavaCompile> {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(16)
+        options.compilerArgs = listOf(
+                "--add-modules", "jdk.incubator.vector" 
+        )
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()
