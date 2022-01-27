@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Thu, 27 Jan 2022 21:27:46 +0700
+Subject: [PATCH] (Purpur) Configurable TPS Catchup
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index e4e161cc9e100524f8893f79de3dba35dbab0026..4b361a027addefcc21ca4d0ec6fc1e74e03b002c 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1292,7 +1292,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+                     this.tickServer(this::haveTime);
+                     this.profiler.popPush("nextTickWait");
+                     this.mayHaveDelayedTasks = true;
+-                    this.delayedTasksMaxNextTickTime = Math.max(Util.getMillis() + 50L, this.nextTickTime);
++                    // Purpur start - tps catchup
++                    if (net.pl3x.purpur.PurpurConfig.tpsCatchup) {
++                        this.delayedTasksMaxNextTickTime = Math.max(Util.getMillis() + 50L, this.nextTickTime);
++                    } else {
++                        this.delayedTasksMaxNextTickTime = this.nextTickTime = curTime / 1000000L + 50L;
++                    }
++                    // Purpur end - tps catchup
+                     this.waitUntilNextTick();
+                     this.profiler.pop();
+                     this.endMetricsRecordingTick();
+diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
+index c68d8f77c7cd52d18490f0c3d6c79aa664c8a036..7edf0510895ab1b2b01c77b70507a0d9bb525fe2 100644
+--- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
++++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
+@@ -169,4 +169,9 @@ public class PurpurConfig {
+     private static void tickLoopSettings() {
+         laggingThreshold = getDouble("settings.lagging-threshold", laggingThreshold);
+     }
++
++    public static boolean tpsCatchup = true;
++    private static void tpsCatchup() {
++        tpsCatchup = getBoolean("settings.tps-catchup", tpsCatchup);
++    }
+ }
