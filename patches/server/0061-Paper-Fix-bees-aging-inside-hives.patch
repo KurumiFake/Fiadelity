@@ -1,13 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Jake Potrebic <jake.m.potrebic@gmail.com>
-Date: Sat, 21 Aug 2021 21:54:16 -0700
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Thu, 27 Jan 2022 15:39:29 +0700
 Subject: [PATCH] (Paper) Fix bees aging inside hives
 
-Fixes bees incorrectly being aged up due to upstream's
-resetting the ticks inside hive on a failed release
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
-index b700f67cd8e143170cf258b941c8091f7fc1a4b1..e6468a69946648277d6da09df7fd609d64b13498 100644
+index b700f67cd8e143170cf258b941c8091f7fc1a4b1..1e1e4b5259337012e6a8b3ed7e526bee82e92b6b 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
 @@ -317,17 +317,18 @@ public class BeehiveBlockEntity extends BlockEntity {
@@ -27,15 +25,23 @@ index b700f67cd8e143170cf258b941c8091f7fc1a4b1..e6468a69946648277d6da09df7fd609d
                      // CraftBukkit end
                  }
              }
-+            tileentitybeehive_hivebee.exitTickCounter++; // Paper
++			tileentitybeehive_hivebee.exitTickCounter++; // Paper
          }
  
      }
-@@ -419,6 +420,7 @@ public class BeehiveBlockEntity extends BlockEntity {
+@@ -412,6 +413,7 @@ public class BeehiveBlockEntity extends BlockEntity {
+ 
+         final CompoundTag entityData;
+         int ticksInHive;
++		int exitTickCounter; // Paper - separate counter for checking if bee should exit to reduce exit attempts
+         final int minOccupationTicks;
+ 
+         BeeData(CompoundTag nbttagcompound, int i, int j) {
+@@ -419,6 +421,7 @@ public class BeehiveBlockEntity extends BlockEntity {
              this.entityData = nbttagcompound;
              this.ticksInHive = i;
              this.minOccupationTicks = j;
-+            this.exitTickCounter = this.ticksInHive; // Paper
++			this.exitTickCounter = this.ticksInHive; // Paper
          }
      }
  }
