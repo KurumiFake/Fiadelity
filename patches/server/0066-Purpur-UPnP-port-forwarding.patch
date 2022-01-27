@@ -1,0 +1,82 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Thu, 27 Jan 2022 21:33:19 +0700
+Subject: [PATCH] (Purpur) UPnP port forwarding
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 4b361a027addefcc21ca4d0ec6fc1e74e03b002c..43482ea1f45b9fb1abfe8af32e0e817ec8577a51 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -310,6 +310,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+     public final SlackActivityAccountant slackActivityAccountant = new SlackActivityAccountant();
+     // Spigot end
+     public static long currentTickLong = 0L; // Paper
++    protected boolean upnp = false; // Purpur
+ 
+     public volatile Thread shutdownThread; // Paper
+     public volatile boolean abnormalExit = false; // Paper
+@@ -1052,6 +1053,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+         // CraftBukkit end
+         MinecraftServer.LOGGER.info("Stopping server");
+         MinecraftTimings.stopServer(); // Paper
++        // Purpur start
++        if (upnp) {
++            if (dev.omega24.upnp4j.UPnP4J.close(this.getPort(), dev.omega24.upnp4j.util.Protocol.TCP)) {
++                LOGGER.info("[UPnP] Port {} closed", this.getPort());
++            } else {
++                LOGGER.error("[UPnP] Failed to close port {}", this.getPort());
++            }
++        }
+         // CraftBukkit start
+         if (this.server != null) {
+             this.server.disablePlugins();
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index dfa20c3d035dd03d909d911dda75418e3f52f181..ac70e2dd33255a31691b0d14891ff25decf25719 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -309,6 +309,30 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+             DedicatedServer.LOGGER.warn("Perhaps a server is already running on that port?");
+             return false;
+         }
++        // Purpur start
++        if (net.pl3x.purpur.PurpurConfig.useUPnP) {
++            LOGGER.info("[UPnP] Attempting to start UPnP port forwarding service...");
++            if (dev.omega24.upnp4j.UPnP4J.isUPnPAvailable()) {
++                if (dev.omega24.upnp4j.UPnP4J.isOpen(this.getPort(), dev.omega24.upnp4j.util.Protocol.TCP)) {
++                    this.upnp = false;
++                    LOGGER.info("[UPnP] Port {} is already open", this.getPort());
++                } else if (dev.omega24.upnp4j.UPnP4J.open(this.getPort(), dev.omega24.upnp4j.util.Protocol.TCP)) {
++                    this.upnp = true;
++                    LOGGER.info("[UPnP] Successfully opened port {}", this.getPort());
++                } else {
++                    this.upnp = false;
++                    LOGGER.info("[UPnP] Failed to open port {}", this.getPort());
++                }
++
++                if (upnp) {
++                    LOGGER.info("[UPnP] {}:{}", dev.omega24.upnp4j.UPnP4J.getExternalIP(), this.getPort());
++                }
++            } else {
++                this.upnp = false;
++                LOGGER.error("[UPnP] Service is unavailable");
++            }
++        }
++        // Purpur end
+ 
+         // CraftBukkit start
+         // this.a((PlayerList) (new DedicatedPlayerList(this, this.customRegistry, this.worldNBTStorage))); // Spigot - moved up
+diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
+index 7edf0510895ab1b2b01c77b70507a0d9bb525fe2..1ffb0e384e459cd21dae31305a3c68561d0f1daa 100644
+--- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
++++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
+@@ -174,4 +174,9 @@ public class PurpurConfig {
+     private static void tpsCatchup() {
+         tpsCatchup = getBoolean("settings.tps-catchup", tpsCatchup);
+     }
++
++    public static boolean useUPnP = false;
++    private static void networkSettings() {
++        useUPnP = getBoolean("settings.network.upnp-port-forwarding", useUPnP);
++    }
+ }
