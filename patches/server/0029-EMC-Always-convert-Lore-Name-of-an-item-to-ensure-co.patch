@@ -1,9 +1,19 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 11:54:35 +0700
+From: Aikar <aikar@aikar.co>
+Date: Mon, 21 Dec 2020 17:24:43 -0500
 Subject: [PATCH] (EMC) Always convert Lore/Name of an item to ensure
  consistency
 
+Original code by starlis, licensed under MIT
+You can find the original code on https://github.com/starlis/empirecraft
+
+Fixes item comparison checks where an old vs new is only different due
+to wrapper componenents.
+
+By always converting to legacy and back for display text, we ensure that
+an item json is consistent.
+
+because item display text cant have functional modifiers, this is safe.
 
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
 index 7695a5ec88023720d873f81fc36f78ad60fb9589..39bd0f608d4cc2b0dddc3dd10d89b709d6829eb5 100644

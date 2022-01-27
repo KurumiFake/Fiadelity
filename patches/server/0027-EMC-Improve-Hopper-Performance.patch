@@ -1,8 +1,12 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 11:42:50 +0700
+From: Aikar <aikar@aikar.co>
+Date: Fri, 29 May 2015 21:58:24 -0400
 Subject: [PATCH] (EMC) Improve Hopper Performance
 
+Original code by starlis, licensed under MIT
+You can find the original code on https://github.com/starlis/empirecraft
+
+Only do an item "suck in" action once per second
 
 diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 index dae6f7a05426ea31d13c82458b33e20abc2571b6..38ffbd4cb60c0b6694ee78fa19c345c9fc96e191 100644

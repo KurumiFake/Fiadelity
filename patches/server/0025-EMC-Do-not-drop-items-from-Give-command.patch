@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 11:17:31 +0700
+From: Aikar <aikar@aikar.co>
+Date: Thu, 14 Jan 2016 00:49:14 -0500
 Subject: [PATCH] (EMC) Do not drop items from Give command
 
+Original code by starlis, licensed under MIT
+You can find the original code on https://github.com/starlis/empirecraft
 
 diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
 index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a2760c093 100644
