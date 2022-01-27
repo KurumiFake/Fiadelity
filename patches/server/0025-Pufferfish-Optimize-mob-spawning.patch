@@ -148,12 +148,12 @@ index 0000000000000000000000000000000000000000..c1929840254a3e6d721816f4a20415be
 +
 +}
 diff --git a/src/main/java/me/titaniumtown/JettPackConfig.java b/src/main/java/me/titaniumtown/JettPackConfig.java
-index 56e9e776750ad569de0d69a3f96994fc4e64d555..b981e72d525dc37b31901103aeefbac9525ce35b 100644
+index 2217bc4a378866eaf224731685b759a27268b655..ee9b92da8c7e357a0d4aba08be3933fd94b17def 100644
 --- a/src/main/java/me/titaniumtown/JettPackConfig.java
 +++ b/src/main/java/me/titaniumtown/JettPackConfig.java
-@@ -121,4 +121,15 @@ public class JettPackConfig {
+@@ -119,4 +119,15 @@ public class JettPackConfig {
+     private static void general() {
          logPlayerLoginLoc = getBoolean("settings.log-player-login-location", logPlayerLoginLoc);
-         fishingRodLength = getDouble("settings.fishing-rod-length", fishingRodLength);
      }
 +	public static boolean enableAsyncMobSpawning;
 +	public static boolean asyncMobSpawningInitialized;
