@@ -1,23 +1,21 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 16:09:12 +0700
+Date: Thu, 27 Jan 2022 16:14:59 +0700
 Subject: [PATCH] (Pufferfish) Throttle goal selector during inactive ticking
 
 
 diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
-index a91f5205e326d11c166212366da3278986dcf4a5..4c2030de86b92fc6750d86f7a263b0cbce0772c2 100644
+index a91f5205e326d11c166212366da3278986dcf4a5..45ba7d8bf1e8979c28e61920701d2338e0f87d17 100644
 --- a/src/main/java/me/kurumifake/FiadelityConfig.java
 +++ b/src/main/java/me/kurumifake/FiadelityConfig.java
-@@ -128,5 +128,12 @@ public class FiadelityConfig {
+@@ -128,5 +128,10 @@ public class FiadelityConfig {
      private static void vectorizedNoise() {
          vectorizedPerlinNoise = getBoolean("use-vectorized-perlin-noise", vectorizedPerlinNoise);
      }
 +    
 +    public static boolean throttleInactiveGoalSelectorTick = false;
 +    private static void inactiveGoalSelectorDisable() {
-+        throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-disable", throttleInactiveGoalSelectorTick,
-+                "Disables the AI goal selector in entity inactive ticks.",
-+                "This can improve performance by a few percent, but has minor gameplay implications.");
++        throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-disable", throttleInactiveGoalSelectorTick);
 +    }
  
  }
