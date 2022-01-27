@@ -9,3 +9,5 @@
 #     minecraft net.minecraft.world.level.entity.LevelEntityGetterAdapter
 #     minecraft net/minecraft/world/level/entity/LevelEntityGetter.java
 minecraft net/minecraft/network/protocol/game/ClientboundSetEntityDataPacket.java
+minecraft net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
+minecraft net/minecraft/world/level/levelgen/synth/PerlinNoise.java
