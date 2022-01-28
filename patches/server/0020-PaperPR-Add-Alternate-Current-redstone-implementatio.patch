@@ -3,6 +3,9 @@ From: Simon Gardling <titaniumtown@gmail.com>
 Date: Fri, 7 Jan 2022 12:42:52 -0500
 Subject: [PATCH] (PaperPR) Add Alternate Current redstone implementation
 
+Original code by Titaniumtown, licensed under GPLv3
+You can find the original code on https://gitlab.com/Titaniumtown/JettPack
+
 Co-authored by: Simon Gardling <titaniumtown@gmail.com>
 
 Originally created by SpaceWalkerRS for the alternate-current (<https://github.com/SpaceWalkerRS/alternate-current>) project and licensed under the MIT license
