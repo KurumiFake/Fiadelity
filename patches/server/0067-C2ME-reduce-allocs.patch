@@ -1,8 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Fri, 28 Jan 2022 10:06:47 +0700
+From: ishland <ishlandmc@yeah.net>
+Date: Mon, 24 Jan 2022 10:56:10 -0500
 Subject: [PATCH] C2ME: reduce allocs
 
+Original code created for the C2ME project (https://github.com/RelativityMC/C2ME-fabric) by RelativityMC, licensed under the MIT License
 
 diff --git a/src/main/java/com/ishland/c2me/common/optimization/reduce_allocs/ObjectCachingUtils.java b/src/main/java/com/ishland/c2me/common/optimization/reduce_allocs/ObjectCachingUtils.java
 new file mode 100644
