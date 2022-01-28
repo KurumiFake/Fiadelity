@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 21:27:46 +0700
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Thu, 26 Mar 2020 19:06:22 -0500
 Subject: [PATCH] (Purpur) Configurable TPS Catchup
 
+Original code by PurpurMC, licensed under MIT.
+You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index e4e161cc9e100524f8893f79de3dba35dbab0026..4b361a027addefcc21ca4d0ec6fc1e74e03b002c 100644

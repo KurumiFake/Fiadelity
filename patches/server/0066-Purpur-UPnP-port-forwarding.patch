@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 21:33:19 +0700
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Wed, 22 Jan 2020 20:13:40 -0600
 Subject: [PATCH] (Purpur) UPnP port forwarding
 
+Original code by PurpurMC, licensed under MIT.
+You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index 4b361a027addefcc21ca4d0ec6fc1e74e03b002c..43482ea1f45b9fb1abfe8af32e0e817ec8577a51 100644
