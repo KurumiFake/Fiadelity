@@ -11,3 +11,4 @@
 minecraft net/minecraft/network/protocol/game/ClientboundSetEntityDataPacket.java
 minecraft net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
 minecraft net/minecraft/world/level/levelgen/synth/PerlinNoise.java
+minecraft net/minecraft/world/level/levelgen/feature/OreFeature.java

@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Fri, 28 Jan 2022 10:06:47 +0700
+Subject: [PATCH] C2ME: reduce allocs
+
+
+diff --git a/src/main/java/com/ishland/c2me/common/optimization/reduce_allocs/ObjectCachingUtils.java b/src/main/java/com/ishland/c2me/common/optimization/reduce_allocs/ObjectCachingUtils.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..9b9c3ed63421a48aa4ba341aef7042fc953147bb
+--- /dev/null
++++ b/src/main/java/com/ishland/c2me/common/optimization/reduce_allocs/ObjectCachingUtils.java
+@@ -0,0 +1,23 @@
++package com.ishland.c2me.common.optimization.reduce_allocs;
++
++import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
++
++import java.util.BitSet;
++import java.util.function.IntFunction;
++
++public class ObjectCachingUtils {
++
++    private static final IntFunction<BitSet> bitSetConstructor = BitSet::new;
++
++    public static ThreadLocal<Int2ObjectOpenHashMap<BitSet>> BITSETS = ThreadLocal.withInitial(Int2ObjectOpenHashMap::new);
++
++    private ObjectCachingUtils() {
++    }
++
++    public static BitSet getCachedOrNewBitSet(int bits) {
++        final BitSet bitSet = BITSETS.get().computeIfAbsent(bits, bitSetConstructor);
++        bitSet.clear();
++        return bitSet;
++    }
++
++}
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
+index dbe7d624aaaa8455217a5397a66ef6964a3e210f..f9a2d085127bae85715b9374b69d9d7352c0db9f 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
+@@ -55,7 +55,7 @@ public class OreFeature extends Feature<OreConfiguration> {
+ 
+     protected boolean doPlace(WorldGenLevel worldGenLevel, Random random, OreConfiguration config, double startX, double endX, double startZ, double endZ, double startY, double endY, int x, int y, int z, int horizontalSize, int verticalSize) {
+         int i = 0;
+-        BitSet bitSet = new BitSet(horizontalSize * verticalSize * horizontalSize);
++        BitSet bitSet = com.ishland.c2me.common.optimization.reduce_allocs.ObjectCachingUtils.getCachedOrNewBitSet(horizontalSize * verticalSize * horizontalSize); // JettPack - C2ME: reduce_allocs
+         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+         int j = config.size;
+         double[] ds = new double[j * 4];
