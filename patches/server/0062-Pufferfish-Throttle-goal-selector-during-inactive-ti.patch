@@ -1,23 +1,24 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 16:14:59 +0700
+From: Kevin Raneri <kevin.raneri@gmail.com>
+Date: Sat, 11 Dec 2021 22:20:45 -0500
 Subject: [PATCH] (Pufferfish) Throttle goal selector during inactive ticking
 
+Original code by pufferfish-gg, licensed under GPLv3
+You can find the original code on https://github.com/pufferfish-gg/Pufferfish
 
 diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
-index a91f5205e326d11c166212366da3278986dcf4a5..45ba7d8bf1e8979c28e61920701d2338e0f87d17 100644
+index a91f5205e326d11c166212366da3278986dcf4a5..4ef6fd102e2a5a2f9497b933ed5445a9d2d1923c 100644
 --- a/src/main/java/me/kurumifake/FiadelityConfig.java
 +++ b/src/main/java/me/kurumifake/FiadelityConfig.java
-@@ -128,5 +128,10 @@ public class FiadelityConfig {
-     private static void vectorizedNoise() {
+@@ -129,4 +129,9 @@ public class FiadelityConfig {
          vectorizedPerlinNoise = getBoolean("use-vectorized-perlin-noise", vectorizedPerlinNoise);
      }
-+    
+ 
 +    public static boolean throttleInactiveGoalSelectorTick = false;
 +    private static void inactiveGoalSelectorDisable() {
 +        throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-disable", throttleInactiveGoalSelectorTick);
 +    }
- 
++
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
 index 0f86978032f6b1b92d87bbea1594ea461b59b685..f53c1a2b138259c9a67e2061169edaa47100e50e 100644

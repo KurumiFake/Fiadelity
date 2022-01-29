@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Etil <81570777+etil2jz@users.noreply.github.com>
+Date: Thu, 9 Dec 2021 15:39:29 +0100
+Subject: [PATCH] (Mirai) Configurable max bees in hive
+
+Original code by etil2jz, licensed under GPLv3
+You can find the original code on https://github.com/etil2jz/Mirai
+
+diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
+index 4ef6fd102e2a5a2f9497b933ed5445a9d2d1923c..1624d9b30dea29b54ad7a3b7a0dc28eb0f5a0a62 100644
+--- a/src/main/java/me/kurumifake/FiadelityConfig.java
++++ b/src/main/java/me/kurumifake/FiadelityConfig.java
+@@ -134,4 +134,9 @@ public class FiadelityConfig {
+         throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-disable", throttleInactiveGoalSelectorTick);
+     }
+ 
++    public static int maxBees = 3;
++    private static void maximumBees() {
++        maxBees = getInt("max-bees-in-hive", maxBees);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
+index 7391cda163a9262555113e26ab294a16c8e416c2..1ff88fb3175aa9ca004d989e74a189998669361e 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
+@@ -43,7 +43,7 @@ public class BeehiveBlockEntity extends BlockEntity {
+     private final List<BeehiveBlockEntity.BeeData> stored = Lists.newArrayList();
+     @Nullable
+     public BlockPos savedFlowerPos;
+-    public int maxBees = 3; // CraftBukkit - allow setting max amount of bees a hive can hold
++    public int maxBees = me.kurumifake.FiadelityConfig.maxBees; // CraftBukkit - allow setting max amount of bees a hive can hold // Mirai - configurable max bees in hive
+ 
+     public BeehiveBlockEntity(BlockPos pos, BlockState state) {
+         super(BlockEntityType.BEEHIVE, pos, state);

@@ -3,6 +3,9 @@ From: BillyGalbreath <Blake.Galbreath@GMail.com>
 Date: Sun, 23 Sep 2018 20:59:53 -0500
 Subject: [PATCH] (Paper) Honor EntityAgeable.ageLock
 
+Original code by PaperMC, licensed under GPLv3
+You can find the original code on https://github.com/PaperMC/Paper
+This patch specifically is licensed under MIT (according to Paper's LICENSE.md)
 
 diff --git a/src/main/java/net/minecraft/world/entity/AgeableMob.java b/src/main/java/net/minecraft/world/entity/AgeableMob.java
 index c0780a8714808498390282b7fa1da1f3aacf8e2a..d165117d62fe8a55d624966e8c4b626c0f52db39 100644

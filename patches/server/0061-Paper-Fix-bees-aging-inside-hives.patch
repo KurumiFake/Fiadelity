@@ -1,11 +1,16 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: KurumiFake <kurumiisshidowife@gmail.com>
-Date: Thu, 27 Jan 2022 15:39:29 +0700
+From: Jake Potrebic <jake.m.potrebic@gmail.com>
+Date: Sat, 21 Aug 2021 21:54:16 -0700
 Subject: [PATCH] (Paper) Fix bees aging inside hives
 
+Original code by PaperMC, licensed under GPLv3
+You can find the original code on https://github.com/PaperMC/Paper
+
+Fixes bees incorrectly being aged up due to upstream's
+resetting the ticks inside hive on a failed release
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
-index b700f67cd8e143170cf258b941c8091f7fc1a4b1..1e1e4b5259337012e6a8b3ed7e526bee82e92b6b 100644
+index b700f67cd8e143170cf258b941c8091f7fc1a4b1..7391cda163a9262555113e26ab294a16c8e416c2 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
 @@ -317,17 +317,18 @@ public class BeehiveBlockEntity extends BlockEntity {
@@ -25,7 +30,7 @@ index b700f67cd8e143170cf258b941c8091f7fc1a4b1..1e1e4b5259337012e6a8b3ed7e526bee
                      // CraftBukkit end
                  }
              }
-+			tileentitybeehive_hivebee.exitTickCounter++; // Paper
++            tileentitybeehive_hivebee.exitTickCounter++; // Paper
          }
  
      }
@@ -33,7 +38,7 @@ index b700f67cd8e143170cf258b941c8091f7fc1a4b1..1e1e4b5259337012e6a8b3ed7e526bee
  
          final CompoundTag entityData;
          int ticksInHive;
-+		int exitTickCounter; // Paper - separate counter for checking if bee should exit to reduce exit attempts
++        int exitTickCounter; // Paper - separate counter for checking if bee should exit to reduce exit attempts
          final int minOccupationTicks;
  
          BeeData(CompoundTag nbttagcompound, int i, int j) {
@@ -41,7 +46,7 @@ index b700f67cd8e143170cf258b941c8091f7fc1a4b1..1e1e4b5259337012e6a8b3ed7e526bee
              this.entityData = nbttagcompound;
              this.ticksInHive = i;
              this.minOccupationTicks = j;
-+			this.exitTickCounter = this.ticksInHive; // Paper
++            this.exitTickCounter = this.ticksInHive; // Paper
          }
      }
  }
