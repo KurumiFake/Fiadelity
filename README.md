@@ -9,7 +9,7 @@
 
 ## What this is
 
-[Airplane](https://airplane.gg) with some patches copy pasted from:
+1.17.1 [Airplane](https://airplane.gg) with some patches copy pasted from:
 * [JettPack](https://gitlab.com/Titaniumtown/JettPack)
 * [Akarin](https://github.com/Akarin-project/Akarin/)
 * [Patina](https://github.com/PatinaMC/Patina)
@@ -22,6 +22,7 @@
 * [Sugarcane](https://github.com/SugarcaneMC/Sugarcane)
 * [Purpur](https://github.com/PurpurMC/Purpur)
 * [Slice](https://github.com/Cryptite/Slice)
+* [AtelierMC](https://github.com/AtelierMC/AtelierMC)
 
 Has some optimizations from [Lithium](https://github.com/jellysquid3/lithium-fabric) and [Hydrogen](https://github.com/CaffeineMC/hydrogen-fabric) (JettPack's port), [C2ME](https://github.com/RelativityMC/C2ME-fabric) (Mirai's port)
 
@@ -42,5 +43,5 @@ In order to distribute and use this server software, you need a paperclip file:
 ```
 
 ## License
-Patches are licensed under GPL-3.0.  
+Patches are licensed under GPL-3.0 unless otherwise noted in the patch headers.
 All other files are licensed under MIT.

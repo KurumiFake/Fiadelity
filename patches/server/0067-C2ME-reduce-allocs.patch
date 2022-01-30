@@ -3,7 +3,10 @@ From: ishland <ishlandmc@yeah.net>
 Date: Mon, 24 Jan 2022 10:56:10 -0500
 Subject: [PATCH] C2ME: reduce allocs
 
-Original code created for the C2ME project (https://github.com/RelativityMC/C2ME-fabric) by RelativityMC, licensed under the MIT License
+Copyright (c) 2021-2022 ishland
+
+Original code by RelativityMC, licensed under MIT
+You can find the original code on https://github.com/RelativityMC/C2ME-fabric (Yarn mappings)
 
 diff --git a/src/main/java/com/ishland/c2me/common/optimization/reduce_allocs/ObjectCachingUtils.java b/src/main/java/com/ishland/c2me/common/optimization/reduce_allocs/ObjectCachingUtils.java
 new file mode 100644
