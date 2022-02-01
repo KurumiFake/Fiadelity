@@ -101,6 +101,19 @@ index 4c9ae6bdb2f0358798f84928271a2d783dcba7b4..e31526e5e1281948c60b56ccfed7a801
          }
  
          @Override
+diff --git a/src/main/java/net/minecraft/world/level/block/MultifaceBlock.java b/src/main/java/net/minecraft/world/level/block/MultifaceBlock.java
+index 9aad85de6413cf1508c58ffd922a4ba0cab34504..f5149fa19a61bfeea4badf437f94655cf205c008 100644
+--- a/src/main/java/net/minecraft/world/level/block/MultifaceBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/MultifaceBlock.java
+@@ -53,7 +53,7 @@ public class MultifaceBlock extends Block {
+         enummap.put(Direction.UP, MultifaceBlock.UP_AABB);
+         enummap.put(Direction.DOWN, MultifaceBlock.DOWN_AABB);
+     });
+-    protected static final Direction[] DIRECTIONS = Direction.values();
++    protected static final Direction[] DIRECTIONS = Direction.values; // JettPack - keep this here, removing it causes issues with other blocks
+     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
+     private final boolean canRotate;
+     private final boolean canMirrorX;
 diff --git a/src/main/java/net/minecraft/world/level/block/piston/PistonBaseBlock.java b/src/main/java/net/minecraft/world/level/block/piston/PistonBaseBlock.java
 index d770649a9e9e9bb28b52d00cd082b87de5814593..38b63982ed0329c7174d36746f5eb208953d7b1f 100644
 --- a/src/main/java/net/minecraft/world/level/block/piston/PistonBaseBlock.java
