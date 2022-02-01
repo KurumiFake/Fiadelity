@@ -2202,6 +2202,18 @@ index f3224f9e1d79124e15841bf392581237f251b38f..73eeb3d1677f1aa640f14490da485f94
      protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
      public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
  
+diff --git a/src/main/java/net/minecraft/world/level/block/GlowLichenBlock.java b/src/main/java/net/minecraft/world/level/block/GlowLichenBlock.java
+index f2ac882dffbcaa0dc62d375828748c4f58c61e9e..f72e295862047327b04e3c3399e3a6447ed2ef58 100644
+--- a/src/main/java/net/minecraft/world/level/block/GlowLichenBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/GlowLichenBlock.java
+@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+ import net.minecraft.world.level.block.state.properties.BooleanProperty;
+ import net.minecraft.world.level.material.FluidState;
+ import net.minecraft.world.level.material.Fluids;
++import alternate.current.util.BlockUtil.DIRECTIONS;
+ 
+ public class GlowLichenBlock extends MultifaceBlock implements BonemealableBlock, SimpleWaterloggedBlock {
+     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 diff --git a/src/main/java/net/minecraft/world/level/block/LecternBlock.java b/src/main/java/net/minecraft/world/level/block/LecternBlock.java
 index 3f5101af9664a8e851f4388ddf50c3640a63b53f..21b4979289d8f55c1b66b905343eb4823703df85 100644
 --- a/src/main/java/net/minecraft/world/level/block/LecternBlock.java

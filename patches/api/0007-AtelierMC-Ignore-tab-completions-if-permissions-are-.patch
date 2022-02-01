@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: JustMangoT <38831897+JustMangoT@users.noreply.github.com>
 Date: Mon, 17 Jan 2022 23:17:29 +0700
-Subject: [PATCH] Ignore tab completions if permissions are missing
+Subject: [PATCH] (AtelierMC) Ignore tab completions if permissions are missing
 
 Original code by AtelierMC, licensed under MIT
 You can find the original code on https://github.com/AtelierMC/AtelierMC
