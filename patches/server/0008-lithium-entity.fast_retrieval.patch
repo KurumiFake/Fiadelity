@@ -6,10 +6,10 @@ Subject: [PATCH] lithium: entity.fast_retrieval
 Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
 
 diff --git a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-index 24552500307c42f9f3dc5c4d9ba73a84a787423a..5fefceb62355445e3e9e6eb51aab182616dbf848 100644
+index 24552500307c42f9f3dc5c4d9ba73a84a787423a..d77a1c2e843715b5da62ab321f45745fbfd6b76e 100644
 --- a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
 +++ b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-@@ -33,30 +33,64 @@ public class EntitySectionStorage<T extends EntityAccess> {
+@@ -33,30 +33,65 @@ public class EntitySectionStorage<T extends EntityAccess> {
          this.intialSectionVisibility = chunkStatusDiscriminator;
      }
  
@@ -86,6 +86,7 @@ index 24552500307c42f9f3dc5c4d9ba73a84a787423a..5fefceb62355445e3e9e6eb51aab1826
 +            this.consumeSection(SectionPos.asLong(x, y, z), action);
 +        }
 +    }
++    // JettPack end
 +
 +    private void consumeSection(long pos, Consumer<EntitySection<T>> action) {
 +        EntitySection<T> section = this.getSection(pos);
