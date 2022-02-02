@@ -248,45 +248,6 @@ index 82702d367109240dd6bb6d98c44525a08d1d0da2..6f6445e15fc04553ceb1357f506f5b86
                  ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
  
                  ImageIO.write(bufferedimage, "PNG", bytearrayoutputstream);
-diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index dcdada42813105a1b76bd72e3642372aad9069bf..41edb481c3f5258d8702f8241ae65044e215ed3d 100644
---- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-+++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -72,6 +72,8 @@ public class ServerChunkCache extends ChunkSource {
-     final com.destroystokyo.paper.util.concurrent.WeakSeqLock loadedChunkMapSeqLock = new com.destroystokyo.paper.util.concurrent.WeakSeqLock();
-     final Long2ObjectOpenHashMap<LevelChunk> loadedChunkMap = new Long2ObjectOpenHashMap<>(8192, 0.5f);
- 
-+    private final java.util.ArrayList<LevelChunk> cachedChunkList = new java.util.ArrayList<>(); // JettPack - reduce allocs
-+
-     private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
- 
-     private static int getChunkCacheKey(int x, int z) {
-@@ -942,6 +944,16 @@ public class ServerChunkCache extends ChunkSource {
-         this.clearCache();
-     }
- 
-+    // JettPack start - lithium: reduce allocs
-+    private java.util.ArrayList<LevelChunk> redirectChunksListClone(int initialArraySize) {
-+        java.util.ArrayList<LevelChunk> list = this.cachedChunkList;
-+        list.clear(); // Ensure the list is empty before re-using it
-+        list.ensureCapacity(initialArraySize);
-+
-+        return list;
-+    }
-+    // JettPack end
-+
-     private void tickChunks() {
-         long i = this.level.getGameTime();
-         long j = i - this.lastInhabitedUpdate;
-@@ -1020,7 +1032,7 @@ public class ServerChunkCache extends ChunkSource {
-                 iterator = this.entityTickingChunks.iterator();
-             } else {
-                 iterator = this.entityTickingChunks.unsafeIterator();
--                List<LevelChunk> shuffled = new java.util.ArrayList<>(this.entityTickingChunks.size());
-+                java.util.ArrayList<LevelChunk> shuffled = this.redirectChunksListClone(this.entityTickingChunks.size()); // JettPack - reduce allocs
-                 while (iterator.hasNext()) {
-                     shuffled.add(iterator.next());
-                 }
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
 index a453aac607f9b38f0bf90038ff2d8071687c4bae..050d59e970a863e7c3d9a01d29ff386b1a439943 100644
 --- a/src/main/java/net/minecraft/server/level/ServerEntity.java
