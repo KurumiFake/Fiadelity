@@ -7,10 +7,10 @@ Original code by starlis, licensed under MIT
 You can find the original code on https://github.com/starlis/empirecraft
 
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 9b85ecc36e1a26fa067fd387fce2dec1391c235d..4c67d5eaf4d0b0a05ce63a112576e16f7d2abfd5 100644
+index a32b080af90dee536934570283a84242878d6d73..268b6a4eb8c6d3fd65dcff5b1d7a0d5f4acf1722 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -904,7 +904,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -905,7 +905,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -21,7 +21,7 @@ index 9b85ecc36e1a26fa067fd387fce2dec1391c235d..4c67d5eaf4d0b0a05ce63a112576e16f
              try {
                  // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 8a00e3c0dd6b707c794930c8145f15f6996e8b89..0f7e96c399018faefa35fa87a70c880816aa5534 100644
+index 1571696b979e3d1888013d66688cc00112154ac0..fbc5351abcdae21f146523c4f33f4b36c3974812 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -889,7 +889,8 @@ public abstract class BlockBehaviour {
