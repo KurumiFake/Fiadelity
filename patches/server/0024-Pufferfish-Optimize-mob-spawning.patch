@@ -169,7 +169,7 @@ index 2217bc4a378866eaf224731685b759a27268b655..ee9b92da8c7e357a0d4aba08be3933fd
  }
 \ No newline at end of file
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 82702d367109240dd6bb6d98c44525a08d1d0da2..95d8952097ccde7f1104b0bc078a690134958fd0 100644
+index 6f6445e15fc04553ceb1357f506f5b86c2cca2eb..4bd0565c7ddb9edf74455d22dfb5dc7628707ec4 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -312,6 +312,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
@@ -194,11 +194,11 @@ index 475e98e6c058284fab49759ce8009932d09213b2..6934db63ff9134c28a95f59f0c402fe8
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index dcdada42813105a1b76bd72e3642372aad9069bf..4c142be690b099295302322645304a6265ffd7f2 100644
+index 41edb481c3f5258d8702f8241ae65044e215ed3d..bbd75e0db167f4a07187a1366177cf91dfc9e0d3 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -73,6 +73,9 @@ public class ServerChunkCache extends ChunkSource {
-     final Long2ObjectOpenHashMap<LevelChunk> loadedChunkMap = new Long2ObjectOpenHashMap<>(8192, 0.5f);
+@@ -75,6 +75,9 @@ public class ServerChunkCache extends ChunkSource {
+     private final java.util.ArrayList<LevelChunk> cachedChunkList = new java.util.ArrayList<>(); // JettPack - reduce allocs
  
      private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
 +    
@@ -207,7 +207,7 @@ index dcdada42813105a1b76bd72e3642372aad9069bf..4c142be690b099295302322645304a62
  
      private static int getChunkCacheKey(int x, int z) {
          return x & 3 | ((z & 3) << 2);
-@@ -998,18 +1001,25 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1010,18 +1013,25 @@ public class ServerChunkCache extends ChunkSource {
                  this.level.timings.playerMobDistanceMapUpdate.startTiming();
                  this.chunkMap.playerMobDistanceMap.update(this.level.players, this.chunkMap.viewDistance);
                  this.level.timings.playerMobDistanceMapUpdate.stopTiming();
@@ -239,7 +239,7 @@ index dcdada42813105a1b76bd72e3642372aad9069bf..4c142be690b099295302322645304a62
              this.level.getProfiler().pop();
              // Paper - moved down, enabled if per-player = false
              // Paper - moved natural spawn event up
-@@ -1042,8 +1052,8 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1054,8 +1064,8 @@ public class ServerChunkCache extends ChunkSource {
  
                      if ((true || this.level.isPositionEntityTicking(chunkcoordintpair)) && !this.chunkMap.isOutsideOfRange(playerchunk, chunkcoordintpair, false)) { // Paper - optimise isOutsideOfRange // Paper - we only iterate entity ticking chunks
                          chunk.setInhabitedTime(chunk.getInhabitedTime() + j);
@@ -250,7 +250,7 @@ index dcdada42813105a1b76bd72e3642372aad9069bf..4c142be690b099295302322645304a62
                          }
  
                          // this.level.timings.doTickTiles.startTiming(); // Spigot // Paper
-@@ -1089,6 +1099,30 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1101,6 +1111,30 @@ public class ServerChunkCache extends ChunkSource {
              }
          }
          // Paper end - controlled flush for entity tracker packets
