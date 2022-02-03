@@ -24,7 +24,7 @@ index 1624d9b30dea29b54ad7a3b7a0dc28eb0f5a0a62..49965a8b902b782127bac00352950a02
          maxBees = getInt("max-bees-in-hive", maxBees);
 diff --git a/src/main/java/me/kurumifake/util/FiadelityPreloadProtocolLib.java b/src/main/java/me/kurumifake/util/FiadelityPreloadProtocolLib.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e3ca89c4d4bb5359e4ee5d6939757d2c71e722d7
+index 0000000000000000000000000000000000000000..47e8933753a85f2f973b36951a4011309a604456
 --- /dev/null
 +++ b/src/main/java/me/kurumifake/util/FiadelityPreloadProtocolLib.java
 @@ -0,0 +1,28 @@
@@ -48,7 +48,7 @@ index 0000000000000000000000000000000000000000..e3ca89c4d4bb5359e4ee5d6939757d2c
 +                final Method initialize = Class.forName("com.comphenix.protocol.wrappers.EnumWrappers", true, protocolLib.getClass().getClassLoader()).getDeclaredMethod("initialize");
 +                initialize.setAccessible(true);
 +                initialize.invoke(null);
-+                synchronized (SugarcanePreloadProtocolLib.class) {
++                synchronized (FiadelityPreloadProtocolLib.class) {
 +                }
 +            }
 +        } catch (Throwable t) {
