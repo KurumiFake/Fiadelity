@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: ishland <ishlandMC@yeah.net>
+Date: Wed, 27 Jan 2021 20:16:47 +0800
+Subject: [PATCH] (Yatopia) Preload ProtocolLib EnumWrappers
+
+Original code by YatopiaMC, licensed under MIT
+You can find the original code on https://github.com/YatopiaMC/Yatopia
+
+diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
+index 1624d9b30dea29b54ad7a3b7a0dc28eb0f5a0a62..49965a8b902b782127bac00352950a022a0bc38b 100644
+--- a/src/main/java/me/kurumifake/FiadelityConfig.java
++++ b/src/main/java/me/kurumifake/FiadelityConfig.java
+@@ -134,6 +134,11 @@ public class FiadelityConfig {
+         throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-disable", throttleInactiveGoalSelectorTick);
+     }
+ 
++    public static boolean preloadProtocolLibEnumWrappers = true;
++    private static void protocolLib() {
++        preloadProtocolLibEnumWrappers = getBoolean("preload-protocollib-enumwrappers", preloadProtocolLibEnumWrappers);
++    }
++
+     public static int maxBees = 3;
+     private static void maximumBees() {
+         maxBees = getInt("max-bees-in-hive", maxBees);
+diff --git a/src/main/java/me/kurumifake/util/FiadelityPreloadProtocolLib.java b/src/main/java/me/kurumifake/util/FiadelityPreloadProtocolLib.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..e3ca89c4d4bb5359e4ee5d6939757d2c71e722d7
+--- /dev/null
++++ b/src/main/java/me/kurumifake/util/FiadelityPreloadProtocolLib.java
+@@ -0,0 +1,28 @@
++package me.kurumifake.util;
++
++import net.minecraft.server.MinecraftServer;
++import org.bukkit.Bukkit;
++import org.bukkit.plugin.Plugin;
++import org.bukkit.plugin.SimplePluginManager;
++
++import java.lang.reflect.Method;
++
++public class FiadelityPreloadProtocolLib {
++
++    public synchronized static void run() {
++        try {
++            final SimplePluginManager pluginManager = (SimplePluginManager) Bukkit.getPluginManager();
++            final Plugin protocolLib = pluginManager.getPlugin("ProtocolLib");
++            if(protocolLib != null && protocolLib.isEnabled()) {
++                MinecraftServer.LOGGER.info("Fiadelity: Attempting to preload ProtocolLib's EnumWrappers");
++                final Method initialize = Class.forName("com.comphenix.protocol.wrappers.EnumWrappers", true, protocolLib.getClass().getClassLoader()).getDeclaredMethod("initialize");
++                initialize.setAccessible(true);
++                initialize.invoke(null);
++                synchronized (SugarcanePreloadProtocolLib.class) {
++                }
++            }
++        } catch (Throwable t) {
++            MinecraftServer.LOGGER.warn("Fiadelity: Failed to preload ProtocolLib's EnumWrappers", t);
++        }
++    }
++}
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index cd360aed7f466c76c2d9f7eddf1db6defca4bf91..7a110c87e5cd016a97bf8d2924d9c2b45a6ec2ce 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1253,6 +1253,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+                 LOGGER.info("Done ({})! For help, type \"help\"", doneTime);
+                 // Paper end
+ 
++                if (me.kurumifake.FiadelityConfig.preloadProtocolLibEnumWrappers) me.kurumifake.util.FiadelityPreloadProtocolLib.run(); // Sugarcane - Preload ProtocolLib's Enum Wrappers
+                 org.spigotmc.WatchdogThread.tick(); // Paper
+                 org.spigotmc.WatchdogThread.hasStarted = true; // Paper
+                 Arrays.fill( recentTps, 20 );

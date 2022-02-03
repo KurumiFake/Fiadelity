@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: l_MrBoom_l <admin@epserv.ru>
+Date: Wed, 30 Sep 2020 18:20:12 +0300
+Subject: [PATCH] (Yatopia) Configurable flight checks
+
+Original code by YatopiaMC, licensed under MIT
+You can find the original code on https://github.com/YatopiaMC/Yatopia
+
+diff --git a/src/main/java/me/kurumifake/FiadelityConfig.java b/src/main/java/me/kurumifake/FiadelityConfig.java
+index 49965a8b902b782127bac00352950a022a0bc38b..9f19f9ac89383c11a0480969f8eafc4e11102467 100644
+--- a/src/main/java/me/kurumifake/FiadelityConfig.java
++++ b/src/main/java/me/kurumifake/FiadelityConfig.java
+@@ -124,6 +124,13 @@ public class FiadelityConfig {
+         criterionTriggerLocation = getBoolean("criterion-trigger.location", criterionTriggerLocation);
+     }
+ 
++    public static boolean checkFlying = true;
++    public static boolean checkVehicleFlying = true;
++    private static void flightChecks() {
++        checkFlying = getBoolean("checks.flight", checkFlying);
++        checkVehicleFlying = getBoolean("checks.vehicle-flight", checkVehicleFlying);
++    }
++
+     public static boolean vectorizedPerlinNoise = false;
+     private static void vectorizedNoise() {
+         vectorizedPerlinNoise = getBoolean("use-vectorized-perlin-noise", vectorizedPerlinNoise);
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index f748d336a47d35c4b688807d76831b1da07cd88b..bc9afd1f539c6a8a0066cf819156e5a3bc753db7 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -319,7 +319,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+         ++this.tickCount;
+         this.knownMovePacketCount = this.receivedMovePacketCount;
+         if (this.clientIsFloating && !this.player.isSleeping()) {
+-            if (++this.aboveGroundTickCount > 80) {
++            if (me.kurumifake.FiadelityConfig.checkFlying && ++this.aboveGroundTickCount > 80) {
+                 ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked for floating too long!", this.player.getName().getString());
+                 this.disconnect(com.destroystokyo.paper.PaperConfig.flyingKickPlayerMessage, org.bukkit.event.player.PlayerKickEvent.Cause.FLYING_PLAYER); // Paper - use configurable kick message & kick event cause
+                 return;
+@@ -338,7 +338,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+             this.vehicleLastGoodY = this.lastVehicle.getY();
+             this.vehicleLastGoodZ = this.lastVehicle.getZ();
+             if (this.clientVehicleIsFloating && this.player.getRootVehicle().getControllingPassenger() == this.player) {
+-                if (++this.aboveGroundVehicleTickCount > 80) {
++                if (me.kurumifake.FiadelityConfig.checkVehicleFlying && ++this.aboveGroundVehicleTickCount > 80) {
+                     ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked for floating a vehicle too long!", this.player.getName().getString());
+                     this.disconnect(com.destroystokyo.paper.PaperConfig.flyingKickVehicleMessage, org.bukkit.event.player.PlayerKickEvent.Cause.FLYING_VEHICLE); // Paper - use configurable kick message & kick event cause
+                     return;
