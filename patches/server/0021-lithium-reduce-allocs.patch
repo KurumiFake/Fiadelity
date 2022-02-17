@@ -88,6 +88,26 @@ index 47b5f75d9f27cf3ab947fd1f69cbd609fb9f2749..a919e8a2aa10ba01d7f389985591a068
                  this.storage = (E[])new Entity[DEFAULT_CAPACITY];
              } else {
                  this.storage = Arrays.copyOf(this.storage, this.storage.length * 2);
+diff --git a/src/main/java/me/titaniumtown/Constants.java b/src/main/java/me/titaniumtown/Constants.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..dd37ade3801561a2da0fe859a127c811c54003ea
+--- /dev/null
++++ b/src/main/java/me/titaniumtown/Constants.java
+@@ -0,0 +1,14 @@
++package me.titaniumtown;
++
++import net.minecraft.core.BlockPos;
++
++public final class Constants {
++    public static final Object[] EMPTY_object_arr = new Object[0];
++    public static final int[] EMPTY_int_arr = new int[0];
++    public static final int[] ZERO_int_arr = new int[]{0};
++    public static final byte[] EMPTY_byte_arr = new byte[0];
++    public static final String[] EMPTY_string_arr = new String[0];
++    public static final long[] EMPTY_long_arr = new long[0];
++    public static final org.bukkit.entity.Entity[] EMPTY_bukkit_entity_arr = new org.bukkit.entity.Entity[0];
++    public static final net.minecraft.world.entity.Entity[] EMPTY_entity_arr = new net.minecraft.world.entity.Entity[0];
++}
 diff --git a/src/main/java/net/minecraft/nbt/ByteArrayTag.java b/src/main/java/net/minecraft/nbt/ByteArrayTag.java
 index 79cff74be9c740dbbc9943d16a6a98da77ea8943..2426e28641e217310ff058ef05be50ae6e72df1b 100644
 --- a/src/main/java/net/minecraft/nbt/ByteArrayTag.java
