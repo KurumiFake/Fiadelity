@@ -8,7 +8,7 @@ Original code by PurpurMC, licensed under MIT
 You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index d2db6bff35c7afb7a9c3d3b7eded417bb4e95eaf..ae459b16034454453d7b10322b5e11f8f83c820e 100644
+index 81a804c5cee79c6bb6f49661278158b5c34d422b..b233f2c342dda8d2dfb322686e5715b5f86ca937 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1022,22 +1022,21 @@ public abstract class PlayerList {

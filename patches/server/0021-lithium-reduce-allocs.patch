@@ -370,10 +370,10 @@ index c82bb38b5b1c9204daef21455723d21509ad1c44..47425ce7091ed8afaa2573901225c92d
          this.type = type;
          this.index = entityId;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index df12ba04df24e1c70c43e00283ea2a78ae2ca422..ff0af4770279c3931e327ef1f6bb77847a9deb6a 100644
+index 25ec6788aac96691ab6241a56aadf87b765aa864..2b38c7fc6234f21089bfc151c451768ebf16740d 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -3000,7 +3000,7 @@ public abstract class LivingEntity extends Entity {
+@@ -3022,7 +3022,7 @@ public abstract class LivingEntity extends Entity {
      @Nullable
      private Map<EquipmentSlot, ItemStack> collectEquipmentChanges() {
          Map<EquipmentSlot, ItemStack> map = null;
@@ -383,7 +383,7 @@ index df12ba04df24e1c70c43e00283ea2a78ae2ca422..ff0af4770279c3931e327ef1f6bb7784
  
          for (int j = 0; j < i; ++j) {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index b247d9dc2b2f5b4a6e87ca35e2a08f9be4e7a7b4..d0df8cf7d578306f82c44539e255c722764676e8 100644
+index d5d9b9dd062d490c6b42dd2e18fe073047710b3a..1a61fee3bc92d2493230b1838d07eff3b7e8cd72 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -992,7 +992,7 @@ public abstract class Mob extends LivingEntity {
@@ -395,7 +395,7 @@ index b247d9dc2b2f5b4a6e87ca35e2a08f9be4e7a7b4..d0df8cf7d578306f82c44539e255c722
          int j = aenumitemslot.length;
  
          for (int k = 0; k < j; ++k) {
-@@ -1048,7 +1048,7 @@ public abstract class Mob extends LivingEntity {
+@@ -1054,7 +1054,7 @@ public abstract class Mob extends LivingEntity {
              }
  
              boolean flag = true;
@@ -404,7 +404,7 @@ index b247d9dc2b2f5b4a6e87ca35e2a08f9be4e7a7b4..d0df8cf7d578306f82c44539e255c722
              int j = aenumitemslot.length;
  
              for (int k = 0; k < j; ++k) {
-@@ -1135,7 +1135,7 @@ public abstract class Mob extends LivingEntity {
+@@ -1141,7 +1141,7 @@ public abstract class Mob extends LivingEntity {
          float f = difficulty.getSpecialMultiplier();
  
          this.enchantSpawnedWeapon(f);
@@ -413,7 +413,7 @@ index b247d9dc2b2f5b4a6e87ca35e2a08f9be4e7a7b4..d0df8cf7d578306f82c44539e255c722
          int i = aenumitemslot.length;
  
          for (int j = 0; j < i; ++j) {
-@@ -1346,7 +1346,7 @@ public abstract class Mob extends LivingEntity {
+@@ -1352,7 +1352,7 @@ public abstract class Mob extends LivingEntity {
              t0.setInvulnerable(this.isInvulnerable());
              if (flag) {
                  t0.setCanPickUpLoot(this.canPickUpLoot());

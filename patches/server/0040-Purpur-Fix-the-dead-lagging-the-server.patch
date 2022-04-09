@@ -19,10 +19,10 @@ index f7ff5a5fd9c6a3f7f2333c354bc5c13a4f3dcab5..3fbbd5305f1d57ce6658cdd00cea42f2
  
      public void absMoveTo(double x, double y, double z) {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 6167eb4c80810738f6e675f302486319796399f8..177fd99a5950c9d736b50b6ef8ade825aa6b7666 100644
+index e83558a67653890fba439a08d79278376f46e622..5fb5436e92e0703bb89aed75c01b0d93d425c1ba 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -2912,7 +2912,7 @@ public abstract class LivingEntity extends Entity {
+@@ -2934,7 +2934,7 @@ public abstract class LivingEntity extends Entity {
              }
          }
  

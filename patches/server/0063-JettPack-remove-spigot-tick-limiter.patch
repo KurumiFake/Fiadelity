@@ -7,7 +7,7 @@ Original code by Titaniumtown, licensed under GPLv3
 You can find the original code on https://gitlab.com/Titaniumtown/JettPack
 
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 5a9c549e20d1483913ce1e289a1392fbdb2423db..9954c9babac13062168551739498198737e994d8 100644
+index 7322ce759bf297e177c7ff4aaf7a3ecd9911e345..da6907b71143152191e954426b2e7a7ac63d0a75 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -175,8 +175,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {

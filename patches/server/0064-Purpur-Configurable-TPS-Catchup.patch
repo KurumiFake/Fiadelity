@@ -7,7 +7,7 @@ Original code by PurpurMC, licensed under MIT.
 You can find the original code on https://github.com/PurpurMC/Purpur
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index e4e161cc9e100524f8893f79de3dba35dbab0026..4b361a027addefcc21ca4d0ec6fc1e74e03b002c 100644
+index e1dd3cb6250d2254f42fb3aba4fe4b3a73ef50df..55163711e32efcd225ffbc6a703ad3fbb8d8a094 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1292,7 +1292,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab

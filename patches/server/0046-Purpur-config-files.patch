@@ -62,7 +62,7 @@ index 6934db63ff9134c28a95f59f0c402fe861f9d303..b089eaced634931ed4946a296183c6d1
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 268b6a4eb8c6d3fd65dcff5b1d7a0d5f4acf1722..5a9c549e20d1483913ce1e289a1392fbdb2423db 100644
+index 3d1ce45115b15bfac2676531aec928b11a0c1c91..7322ce759bf297e177c7ff4aaf7a3ecd9911e345 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -171,6 +171,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {

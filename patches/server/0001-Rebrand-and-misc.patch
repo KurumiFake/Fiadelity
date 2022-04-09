@@ -9,7 +9,7 @@ Subject: [PATCH] Rebrand and misc
 - Hardcode BukkitVersion
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 3823eaa2facbe9cb1dfaa81801e3686228a53909..ed8c4cdd9ec0ffe53af746df773ae25fe762caa9 100644
+index a8d405700f885cd6eed9132d5c6f89754ab9f47e..f9a69344521379fee687886b9b3e7a9f8ab5dae9 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -22,7 +22,7 @@ repositories {
@@ -21,7 +21,24 @@ index 3823eaa2facbe9cb1dfaa81801e3686228a53909..ed8c4cdd9ec0ffe53af746df773ae25f
      implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
-@@ -45,18 +45,20 @@ dependencies {
+@@ -33,42 +33,44 @@ dependencies {
+           all its classes to check if they are plugins.
+           Scanning takes about 1-2 seconds so adding this speeds up the server start.
+      */
+-    implementation("org.apache.logging.log4j:log4j-core:2.17.1") // Paper - implementation
+-    annotationProcessor("org.apache.logging.log4j:log4j-core:2.17.1") // Paper - Needed to generate meta for out hex color converter plugin
++    implementation("org.apache.logging.log4j:log4j-core:2.17.2") // Paper - implementation
++    annotationProcessor("org.apache.logging.log4j:log4j-core:2.17.2") // Paper - Needed to generate meta for out hex color converter plugin
+     // Paper end
+-    implementation("org.apache.logging.log4j:log4j-iostreams:2.17.1") // Paper
+-    implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.17.1") // Paper
+-    implementation("org.apache.logging.log4j:log4j-api:2.17.1") // Paper
++    implementation("org.apache.logging.log4j:log4j-iostreams:2.17.2") // Paper
++    implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2") // Paper
++    implementation("org.apache.logging.log4j:log4j-api:2.17.2") // Paper
+     implementation("org.ow2.asm:asm:9.2")
+     implementation("org.ow2.asm:asm-commons:9.2") // Paper - ASM event executor generation
+     implementation("com.googlecode.json-simple:json-simple:1.1.1") {
          // This includes junit transitively for whatever reason
          isTransitive = false
      }
@@ -39,7 +56,7 @@ index 3823eaa2facbe9cb1dfaa81801e3686228a53909..ed8c4cdd9ec0ffe53af746df773ae25f
 +    runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.3")
  
 -    implementation("io.netty:netty-all:4.1.65.Final") // Paper
-+    implementation("io.netty:netty-all:4.1.73.Final") // Paper
++    implementation("io.netty:netty-all:4.1.75.Final") // Paper
 +    implementation("cat.inspiracio:rhino-js-engine:1.7.7.1") // Purpur
 +    implementation("dev.omega24:upnp4j:1.0") // Purpur
  
@@ -48,14 +65,20 @@ index 3823eaa2facbe9cb1dfaa81801e3686228a53909..ed8c4cdd9ec0ffe53af746df773ae25f
 +    implementation("com.velocitypowered:velocity-native:1.1.10-SNAPSHOT") // Paper
  
      implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
-     implementation("org.yaml:snakeyaml:1.28")
-@@ -67,8 +69,8 @@ dependencies {
+-    implementation("org.yaml:snakeyaml:1.28")
+-    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.7.2") { // Airplane - more config
++    implementation("org.yaml:snakeyaml:1.30")
++    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8") { // Airplane - more config
+         exclude(group="org.yaml", module="snakeyaml") // exclude snakeyaml dependency because its old (1.26)
+     } // Airplane - more config
+     implementation("com.github.technove:Flare:34637f3f87") // Airplane - flare
  
-     implementation("io.sentry:sentry:5.4.0") // Airplane
+-    implementation("io.sentry:sentry:5.4.0") // Airplane
++    implementation("io.sentry:sentry:5.7.2") // Airplane
  
 -    testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
 -    testImplementation("junit:junit:4.13.1")
-+    testImplementation("io.github.classgraph:classgraph:4.8.138") // Paper - mob goal test
++    testImplementation("io.github.classgraph:classgraph:4.8.143") // Paper - mob goal test
 +    testImplementation("junit:junit:4.13.2")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
  }
