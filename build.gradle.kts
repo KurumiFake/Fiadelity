@@ -59,14 +59,5 @@ paperweight {
             apiOutputDir.set(layout.projectDirectory.dir("Fiadelity-API"))
             serverOutputDir.set(layout.projectDirectory.dir("Fiadelity-Server"))
         }
-
-        patchTasks {
-            register("mojangApi") {
-                isBareDirectory.set(true)
-                upstreamDir.set("work/Paper-MojangAPI"))
-                patchDir.set(layout.projectDirectory.dir("patches/mojangapi"))
-                outputDir.set(layout.projectDirectory.dir("forktest-mojangapi"))
-            }
-        }
     }
 }
