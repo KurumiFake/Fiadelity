@@ -5,22 +5,32 @@ Subject: [PATCH] dependencies
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 92b612126a6bac0b89198a92bbb73b742ec9d064..3fa22ceec787b268f7fc90aaf2f0d7e790c10860 100644
+index 92b612126a6bac0b89198a92bbb73b742ec9d064..c13680984f6b9b115d97a5a99b9d7811257e9991 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -26,26 +26,27 @@ configurations.api {
+@@ -10,7 +10,7 @@ java {
+     withJavadocJar()
+ }
+ 
+-val adventureVersion = "4.9.3"
++val adventureVersion = "4.10.1"
+ val apiAndDocs: Configuration by configurations.creating {
+     attributes {
+         attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.DOCUMENTATION))
+@@ -26,41 +26,41 @@ configurations.api {
  dependencies {
      // api dependencies are listed transitively to API consumers
      api("commons-lang:commons-lang:2.6")
 -    api("com.google.guava:guava:21.0")
 -    api("com.google.code.gson:gson:2.8.8") // Paper - bump
 +    api("com.google.guava:guava:31.0.1-jre")
-+    api("com.google.code.gson:gson:2.8.9") // Paper - bump
++    api("com.google.code.gson:gson:2.9.0") // Paper - bump
      api("net.md-5:bungeecord-chat:1.16-R0.4")
-     api("org.yaml:snakeyaml:1.28")
+-    api("org.yaml:snakeyaml:1.28")
++    api("org.yaml:snakeyaml:1.30")
      api("com.googlecode.json-simple:json-simple:1.1.1") // Paper
 -    api("it.unimi.dsi:fastutil:8.2.2")
-+    api("it.unimi.dsi:fastutil:8.5.6")
++    api("it.unimi.dsi:fastutil:8.5.8")
      apiAndDocs(platform("net.kyori:adventure-bom:$adventureVersion"))
      apiAndDocs("net.kyori:adventure-api")
      apiAndDocs("net.kyori:adventure-text-serializer-gson")
@@ -28,30 +38,30 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..3fa22ceec787b268f7fc90aaf2f0d7e7
      apiAndDocs("net.kyori:adventure-text-serializer-plain")
 -    api("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
 -    api("org.slf4j:slf4j-api:1.7.30") // Paper
-+    api("org.apache.logging.log4j:log4j-api:2.17.1") // Paper
-+    api("org.slf4j:slf4j-api:1.7.35") // Paper
-+    api("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Purpur
++    api("org.apache.logging.log4j:log4j-api:2.17.2") // Paper
++    api("org.slf4j:slf4j-api:1.7.36") // Paper
  
 -    implementation("org.ow2.asm:asm:9.1")
 -    implementation("org.ow2.asm:asm-commons:9.1")
-+    implementation("org.ow2.asm:asm:9.2")
-+    implementation("org.ow2.asm:asm-commons:9.2")
++    implementation("org.ow2.asm:asm:9.3")
++    implementation("org.ow2.asm:asm-commons:9.3")
  
 -    compileOnly("org.apache.maven:maven-resolver-provider:3.8.1")
 -    compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.0")
 -    compileOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.0")
-+    compileOnly("org.apache.maven:maven-resolver-provider:3.8.4")
++    compileOnly("org.apache.maven:maven-resolver-provider:3.8.5")
 +    compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.3")
 +    compileOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.3")
      compileOnly("com.google.code.findbugs:jsr305:1.3.9") // Paper
  
-     val annotations = "org.jetbrains:annotations:21.0.1" // Paper - we don't want Java 5 annotations...
-@@ -53,12 +54,12 @@ dependencies {
+-    val annotations = "org.jetbrains:annotations:21.0.1" // Paper - we don't want Java 5 annotations...
++    val annotations = "org.jetbrains:annotations:23.0.0" // Paper - we don't want Java 5 annotations...
+     compileOnly(annotations)
      testCompileOnly(annotations)
  
      // Paper start - add checker
 -    val checkerAnnotations = "org.checkerframework:checker-qual:3.18.0"
-+    val checkerAnnotations = "org.checkerframework:checker-qual:3.21.1"
++    val checkerAnnotations = "org.checkerframework:checker-qual:3.21.4"
      compileOnlyApi(checkerAnnotations)
      testCompileOnly(checkerAnnotations)
      // Paper end
@@ -59,5 +69,21 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..3fa22ceec787b268f7fc90aaf2f0d7e7
 -    testImplementation("junit:junit:4.13.1")
 +    testImplementation("junit:junit:4.13.2")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
-     testImplementation("org.ow2.asm:asm-tree:9.2")
+-    testImplementation("org.ow2.asm:asm-tree:9.2")
++    testImplementation("org.ow2.asm:asm-tree:9.3")
  }
+ 
+ configure<PublishingExtension> {
+@@ -101,9 +101,9 @@ tasks.withType<Javadoc> {
+         )
+     }
+     (options as StandardJavadocDocletOptions).links(
+-        "https://guava.dev/releases/21.0/api/docs/",
+-        "https://javadoc.io/doc/org.yaml/snakeyaml/1.28/",
+-        "https://javadoc.io/doc/org.jetbrains/annotations/21.0.1/", // Paper - we don't want Java 5 annotations
++        "https://javadoc.io/doc/com.google.guava/guava/31.1/",
++        "https://javadoc.io/doc/org.yaml/snakeyaml/1.30/",
++        "https://javadoc.io/doc/org.jetbrains/annotations/23.0.0/", // Paper - we don't want Java 5 annotations
+         "https://javadoc.io/doc/net.md-5/bungeecord-chat/1.16-R0.4/",
+         // Paper start
+         "https://jd.adventure.kyori.net/api/$adventureVersion/",

@@ -1,5 +1,5 @@
 rootProject.name = "Fiadelity"
-include("Fiadelity-API", "Fiadelity-MojangAPI", "Fiadelity-Server")
+include("Fiadelity-API", "Fiadelity-Server")
 
 pluginManagement {
     repositories {
