@@ -5,7 +5,7 @@ Subject: [PATCH] dependencies
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 92b612126a6bac0b89198a92bbb73b742ec9d064..d863704cf3c52257f8d48850af7e681185926721 100644
+index 92b612126a6bac0b89198a92bbb73b742ec9d064..693d2431b74f9da5f2f15c8362e5412fcf208bba 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -10,7 +10,7 @@ java {
@@ -38,9 +38,9 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..d863704cf3c52257f8d48850af7e6811
      apiAndDocs("net.kyori:adventure-text-serializer-plain")
 -    api("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
 -    api("org.slf4j:slf4j-api:1.7.30") // Paper
-+    api("net.kyori:adventure-text-minimessage") // Purpur
 +    api("org.apache.logging.log4j:log4j-api:2.17.2") // Paper
 +    api("org.slf4j:slf4j-api:1.7.36") // Paper
++    api("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Purpur
  
 -    implementation("org.ow2.asm:asm:9.1")
 -    implementation("org.ow2.asm:asm-commons:9.1")
