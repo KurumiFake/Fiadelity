@@ -9,10 +9,10 @@ Subject: [PATCH] Rebrand and misc
 - Hardcode BukkitVersion
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index a8d405700f885cd6eed9132d5c6f89754ab9f47e..d71295af7511ed033f1dbc3c9b42b98d0a1b384a 100644
+index 408b85c21f8330e3f955237317706a46e0a5a81d..158305b02d7a88f3cba7990a7f21f266738c97fc 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -22,7 +22,7 @@ repositories {
+@@ -13,7 +13,7 @@ plugins {
  }
  
  dependencies {
@@ -21,7 +21,7 @@ index a8d405700f885cd6eed9132d5c6f89754ab9f47e..d71295af7511ed033f1dbc3c9b42b98d
      implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
-@@ -33,42 +33,44 @@ dependencies {
+@@ -24,42 +24,44 @@ dependencies {
            all its classes to check if they are plugins.
            Scanning takes about 1-2 seconds so adding this speeds up the server start.
       */
@@ -58,7 +58,7 @@ index a8d405700f885cd6eed9132d5c6f89754ab9f47e..d71295af7511ed033f1dbc3c9b42b98d
 +    runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.3")
  
 -    implementation("io.netty:netty-all:4.1.65.Final") // Paper
-+    implementation("io.netty:netty-all:4.1.75.Final") // Paper
++    implementation("io.netty:netty-all:4.1.76.Final") // Paper
 +    implementation("cat.inspiracio:rhino-js-engine:1.7.7.1") // Purpur
 +    implementation("dev.omega24:upnp4j:1.0") // Purpur
  
@@ -76,16 +76,16 @@ index a8d405700f885cd6eed9132d5c6f89754ab9f47e..d71295af7511ed033f1dbc3c9b42b98d
      implementation("com.github.technove:Flare:34637f3f87") // Airplane - flare
  
 -    implementation("io.sentry:sentry:5.4.0") // Airplane
-+    implementation("io.sentry:sentry:5.7.2") // Airplane
++    implementation("io.sentry:sentry:5.7.3") // Airplane
  
 -    testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
 -    testImplementation("junit:junit:4.13.1")
-+    testImplementation("io.github.classgraph:classgraph:4.8.143") // Paper - mob goal test
++    testImplementation("io.github.classgraph:classgraph:4.8.146") // Paper - mob goal test
 +    testImplementation("junit:junit:4.13.2")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
  }
  
-@@ -85,7 +87,7 @@ tasks.jar {
+@@ -76,7 +78,7 @@ tasks.jar {
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
              "Implementation-Version" to "git-Paper-$implementationVersion",
@@ -174,7 +174,7 @@ index e79ec7919e6cf160fec1cb981d85f0f33c316b41..3809a187df08e9ed43e39703cef6a426
                  text("You are on the latest version!", GREEN);
              default ->
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7120a77ec93009faf1f18fd6c9bc020de66a5f73..691a44d81ed497a8677404508171874afda346d3 100644
+index a208570c6739e0e466fbdcc5556d2510a219ceaa..7dffb4515400239f5a68d319561c85e1356ab118 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1729,7 +1729,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
