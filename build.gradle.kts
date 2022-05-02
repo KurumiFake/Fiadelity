@@ -50,7 +50,7 @@ paperweight {
         remapRepo.set("https://maven.fabricmc.net/")
         decompileRepo.set("https://maven.quiltmc.org/")
 
-        url.set(github("fakesusdev", "Airplane"))
+        url.set(github("TECHNOVE", "Airplane"))
         ref.set(providers.gradleProperty("AirplaneCommit"))
 
         withStandardPatcher {
