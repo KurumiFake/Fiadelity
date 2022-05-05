@@ -2357,7 +2357,7 @@ index 0cfa1abca2c5744a4147b05905983ae4acaa569a..eacf71b3c01f3f517ea7e407a386247c
      public BlockState rotate(BlockState state, Rotation rotation) {
          return (BlockState) state.setValue(TripWireHookBlock.FACING, rotation.rotate((Direction) state.getValue(TripWireHookBlock.FACING)));
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 83d813025efca5846538e36508a5d4fe38b02108..1dea15a6d31d890b5269a6b046bc2f2bdc5ccb67 100644
+index 83d813025efca5846538e36508a5d4fe38b02108..f8cfb18fa0cc9fbcc605abefc2af4cfc0b24bca0 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -69,7 +69,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
@@ -2378,10 +2378,10 @@ index 83d813025efca5846538e36508a5d4fe38b02108..1dea15a6d31d890b5269a6b046bc2f2b
 +        return false;
 +    }
 +
-+    public boolean isDirectSignalSourceTo(Level level, BlockPos pos, BlockState state, Direction di>
++    public boolean isDirectSignalSourceTo(Level level, BlockPos pos, BlockState state, Direction dir) {
 +        return false;
 +    }
-+    // Paper end                                                                                    +
++    // Paper end
 +
      @Deprecated
      public PushReaction getPistonPushReaction(BlockState state) {
