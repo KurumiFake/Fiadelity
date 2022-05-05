@@ -186,7 +186,7 @@ index 88bac72edf19c578902f49d20353989ed4d96f8f..7d7bbb59591d8178e38faa678605e4b2
  
      public double getDouble(int index) {
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index 291241502bdbb4bac666735b0d6365b612612e04..431a44a9c13e87dd108a1c1100567859442e7e3b 100644
+index fb5f2090e17cee53e67482cd72d56d23b81582a0..1dedab043d52fca78a8a37019fa00551299860a1 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
 @@ -304,7 +304,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
@@ -212,7 +212,7 @@ index 6a00ee7f69bf44c5a9a329df26ac5640b368283b..a77213c89874c175ecb078afcfc3719f
          OptionSpec<Integer> optionspec11 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(-1, new Integer[0]);
          OptionSpec<String> optionspec12 = optionparser.accepts("serverId").withRequiredArg();
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 82702d367109240dd6bb6d98c44525a08d1d0da2..6f6445e15fc04553ceb1357f506f5b86c2cca2eb 100644
+index 27b0b49eaed9f498676d82bd0ecaf98c6c74c307..0f9e6e2d157a2b8ed1cbfe0c45e7e8e9b7dff75b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1447,8 +1447,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
@@ -240,10 +240,10 @@ index a453aac607f9b38f0bf90038ff2d8071687c4bae..050d59e970a863e7c3d9a01d29ff386b
  
              for (int j = 0; j < i; ++j) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index e7a0cbbfb5ad4d0876ee49a9c5c01b7849a52e39..e4fc2b871b2e02a67760c7c2d33e74bf4930e24c 100644
+index d3c9bfce60ab8c041ffe4d03270eb6fc5e6afa12..787f6fc5cc0484c5e0eb65e06730c929f8f84247 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -958,7 +958,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -948,7 +948,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
                      BlockPos blockposition2 = blockposition.set(j + randomX, randomY, k + randomZ);
                      BlockState iblockdata = com.destroystokyo.paper.util.maplist.IBlockDataList.getBlockDataFromRaw(raw);
  
@@ -252,7 +252,7 @@ index e7a0cbbfb5ad4d0876ee49a9c5c01b7849a52e39..e4fc2b871b2e02a67760c7c2d33e74bf
                      // We drop the fluid tick since LAVA is ALREADY TICKED by the above method (See LiquidBlock).
                      // TODO CHECK ON UPDATE
                  }
-@@ -1102,7 +1102,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1092,7 +1092,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      public static List<Entity> getCurrentlyTickingEntities() {
          Entity ticking = currentlyTickingEntity.get();
@@ -370,7 +370,7 @@ index c82bb38b5b1c9204daef21455723d21509ad1c44..47425ce7091ed8afaa2573901225c92d
          this.type = type;
          this.index = entityId;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 25ec6788aac96691ab6241a56aadf87b765aa864..2b38c7fc6234f21089bfc151c451768ebf16740d 100644
+index 0ed010c44d3994d17df57c17e38bd9ac2dfd3442..d782a7fd37d6b7c5ea10965641e736dfbbe41333 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -3022,7 +3022,7 @@ public abstract class LivingEntity extends Entity {
@@ -464,7 +464,7 @@ index 47c3fe78b61930aec272e45339707b4b0795a1c3..2f16a61555e4d71d8ccf19954eea3ed3
      // CraftBukkit start
      static {
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index c10e2864170b2d95cdce89f94c076c5aad57e451..72eea1bb0142357f8ba0e35ba58f9f0e5bf6a9d8 100644
+index 21c4f7d61ddb34053ad1fb1b711afe4028c8d99e..c9acab4a39d8bbedb27d7baad92e196303ff906d 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -216,7 +216,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
