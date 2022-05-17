@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Owen <23108066+Owen1212055@users.noreply.github.com>
+Date: Thu, 10 Mar 2022 21:39:11 -0500
+Subject: [PATCH] (Paper-1.18.2) Prevent despawned navigators being readded
+ (#7574)
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 3c168705d5b4ee55bd062afa28f4e8dda7a73c76..8dd73398c117f9dd7c3df68e3e40e2ce44b5ce33 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -1101,7 +1101,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+     public void tickNonPassenger(Entity entity) {
+         // Paper start - log detailed entity tick information
+         io.papermc.paper.util.TickThread.ensureTickThread("Cannot tick an entity off-main");
+-        this.entityManager.updateNavigatorsInRegion(entity); // Paper - optimise notify
++        if (!entity.isRemoved()) this.entityManager.updateNavigatorsInRegion(entity); // Paper - optimise notify
+         try {
+             if (currentlyTickingEntity.get() == null) {
+                 currentlyTickingEntity.lazySet(entity);
