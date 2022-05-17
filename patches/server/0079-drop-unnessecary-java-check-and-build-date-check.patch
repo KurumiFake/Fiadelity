@@ -1,0 +1,41 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Tue, 17 May 2022 18:25:01 +0200
+Subject: [PATCH] drop unnessecary java check and build date check
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index 12d4c6364cca4f8a5aabd4c1370c967a3ebf2c9d..3aa64caafa0a4d1dad5973652d3473ec8921f61d 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -246,10 +246,10 @@ public class Main {
+                 System.err.println("Unsupported Java detected (" + javaVersion + "). This version of Minecraft requires at least Java 16. Check your Java version with the command 'java -version'.");
+                 return;
+             }
+-            if (javaVersion > 61.0) {
++            /*if (javaVersion > 61.0) {
+                 System.err.println("Unsupported Java detected (" + javaVersion + "). Only up to Java 17 is supported.");
+                 if (!Boolean.getBoolean("Paper.IgnoreJavaVersion")) return; // Paper
+-            }
++            }*/
+ 
+             try {
+                 // Paper start - Handled by TerminalConsoleAppender
+@@ -285,7 +285,7 @@ public class Main {
+                     System.setProperty(TerminalConsoleAppender.JLINE_OVERRIDE_PROPERTY, "false"); // Paper
+                 }
+ 
+-                if (Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {
++                /*if (Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {
+                     Date buildDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z").parse(Main.class.getPackage().getImplementationVendor()); // Paper
+ 
+                     Calendar deadline = Calendar.getInstance();
+@@ -298,7 +298,7 @@ public class Main {
+                         //Thread.sleep(TimeUnit.SECONDS.toMillis(20));
+                         // Paper End
+                     }
+-                }
++                }*/
+ 
+                 // Paper start - Log Java and OS versioning to help with debugging plugin issues
+                 java.lang.management.RuntimeMXBean runtimeMX = java.lang.management.ManagementFactory.getRuntimeMXBean();

@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Spottedleaf <Spottedleaf@users.noreply.github.com>
+Date: Thu, 31 Mar 2022 05:11:37 -0700
+Subject: [PATCH] (Paper-1.18.2) Ensure entity passenger world matches ridden
+ entity
+
+Bad plugins doing this would cause some obvious problems...
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index d1f03ececa6cfef48c176c40ad8ec63ed86421f4..0bbe944fad76e4c90f1cfe5aecaa53b82da79ee1 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -2600,6 +2600,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+     }
+ 
+     protected boolean addPassenger(Entity entity) { // CraftBukkit
++        // Paper start
++        if (entity.level != this.level) {
++            LOGGER.error("Entity passenger world must match, cannot add " + entity + " as passenger to " + this, new Throwable());
++            return false;
++        }
++        // Paper end
+         if (entity == this) throw new IllegalArgumentException("Entities cannot become a passenger of themselves"); // Paper - issue 572
+         if (entity.getVehicle() != this) {
+             throw new IllegalStateException("Use x.startRiding(y), not y.addPassenger(x)");
