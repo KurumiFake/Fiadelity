@@ -8,9 +8,4 @@
 # To import classes from the vanilla Minecraft jar use `minecraft` as the artifactId:
 #     minecraft net.minecraft.world.level.entity.LevelEntityGetterAdapter
 #     minecraft net/minecraft/world/level/entity/LevelEntityGetter.java
-minecraft net/minecraft/network/protocol/game/ClientboundSetEntityDataPacket.java
-minecraft net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
-minecraft net/minecraft/world/level/levelgen/synth/PerlinNoise.java
-minecraft net/minecraft/world/level/levelgen/feature/OreFeature.java
-minecraft net/minecraft/world/entity/EquipmentSlot.java
-minecraft net/minecraft/world/level/block/entity/EnchantmentTableBlockEntity.java
+minecraft net/minecraft/network/syncher/EntityDataSerializers.java
