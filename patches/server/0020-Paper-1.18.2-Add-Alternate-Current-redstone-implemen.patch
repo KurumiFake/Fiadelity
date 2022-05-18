@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Space Walker <spacedoesrs@gmail.com>
 Date: Tue, 5 Apr 2022 01:01:13 +0200
-Subject: [PATCH] (PaperPR) Add Alternate Current redstone implementation
+Subject: [PATCH] (Paper-1.18.2) Add Alternate Current redstone implementation
 
 Author: Space Walker <spacedoesrs@gmail.com>
 
@@ -25,8 +25,6 @@ to check if any block is a potential power source.
 
 The use-faster-eigencraft-redstone config has been replaced with the redstone-implementation config, which can be used to
 switch between the vanilla, Eigencraft, and Alternate Current implementations.
-
-Taken from https://github.com/PaperMC/Paper/pull/7701
 
 diff --git a/src/main/java/alternate/current/wire/LevelHelper.java b/src/main/java/alternate/current/wire/LevelHelper.java
 new file mode 100644
@@ -203,10 +201,10 @@ index 0000000000000000000000000000000000000000..acfe97d62ef863a14e2e43db30917bd5
 +}
 diff --git a/src/main/java/alternate/current/wire/PowerQueue.java b/src/main/java/alternate/current/wire/PowerQueue.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..eebf926e4517e41984b85a4bf93f2c9edc801a4c
+index 0000000000000000000000000000000000000000..9c293bef09ad1c95ba24ea6c41a27c5489b548dd
 --- /dev/null
 +++ b/src/main/java/alternate/current/wire/PowerQueue.java
-@@ -0,0 +1,202 @@
+@@ -0,0 +1,209 @@
 +package alternate.current.wire;
 +
 +import java.util.AbstractQueue;
@@ -240,10 +238,12 @@ index 0000000000000000000000000000000000000000..eebf926e4517e41984b85a4bf93f2c9e
 +        int power = wire.nextPower();
 +
 +        if (contains(wire)) {
-+            if (power != wire.power) {
-+                move(wire, power);
-+            } else {
++            if (wire.power == power) {
++                // already queued for this power; exit
 +                return false;
++            } else {
++                // already queued for different power; move it
++                move(wire, power);
 +            }
 +        } else {
 +            insert(wire, power);
@@ -259,16 +259,21 @@ index 0000000000000000000000000000000000000000..eebf926e4517e41984b85a4bf93f2c9e
 +        }
 +
 +        WireNode wire = head;
-+        head = head.next;
++        WireNode next = wire.next;
 +
-+        if (head == null) {
-+            clear();
++        if (next == null) {
++            clear(); // reset the tails array
 +        } else {
-+            head.prev = null;
-+
-+            if (wire.power != head.power) {
++            if (wire.power != next.power) {
++                // if the head is also a tail, its entry in the array
++                // can be cleared; there is no previous wire with the
++                // same power to take its place.
 +                tails[wire.power + OFFSET] = null;
 +            }
++
++            wire.next = null;
++            next.prev = null;
++            head = next;
 +
 +            size--;
 +        }
@@ -310,65 +315,65 @@ index 0000000000000000000000000000000000000000..eebf926e4517e41984b85a4bf93f2c9e
 +    }
 +
 +    public boolean contains(WireNode wire) {
-+        return wire.next != null || wire == tail;
++        return wire == head || wire.prev != null;
 +    }
 +
 +    private void move(WireNode wire, int power) {
++        remove(wire);
++        insert(wire, power);
++    }
++
++    private void remove(WireNode wire) {
 +        if (wire == tail || wire.power != wire.next.power) {
-+            if (wire == head || wire.prev.power != wire.power) {
++            // assign a new tail for this wire's power
++            if (wire == head || wire.power != wire.prev.power) {
++                // there is no other wire with the same power; clear
 +                tails[wire.power + OFFSET] = null;
 +            } else {
++                // the previous wire in the queue becomes the tail
 +                tails[wire.power + OFFSET] = wire.prev;
 +            }
 +        }
 +
-+        size--;
-+
-+        unlink(wire);
-+        insert(wire, power);
-+    }
-+
-+    private void unlink(WireNode wire) {
 +        if (wire == head) {
-+            head = head.next;
++            head = wire.next;
 +        } else {
 +            wire.prev.next = wire.next;
 +        }
 +        if (wire == tail) {
-+            tail = tail.prev;
++            tail = wire.prev;
 +        } else {
 +            wire.next.prev = wire.prev;
 +        }
 +
 +        wire.prev = null;
 +        wire.next = null;
++
++        size--;
 +    }
 +
 +    private void insert(WireNode wire, int power) {
++        // store the power for which this wire is queued
 +        wire.power = power;
 +
-+        link(wire);
-+
-+        size++;
-+
-+        int index = wire.power + OFFSET;
-+        tails[index] = wire;
-+    }
-+
-+    private void link(WireNode wire) {
++        // wires are sorted by power (highest to lowest)
++        // wires with the same power are ordered FIFO
 +        if (head == null) {
-+            linkFirst(wire);
++            // first element in this queue \o/
++            head = tail = wire;
 +        } else if (wire.power > head.power) {
 +            linkHead(wire);
 +        } else if (wire.power <= tail.power) {
 +            linkTail(wire);
 +        } else {
++            // since the wire is neither the head nor the tail
++            // findPrev is guaranteed to find a non-null element
 +            linkAfter(findPrev(wire), wire);
 +        }
-+    }
 +
-+    private void linkFirst(WireNode wire) {
-+        head = tail = wire;
++        tails[power + OFFSET] = wire;
++
++        size++;
 +    }
 +
 +    private void linkHead(WireNode wire) {
@@ -389,9 +394,9 @@ index 0000000000000000000000000000000000000000..eebf926e4517e41984b85a4bf93f2c9e
 +
 +    private void linkBetween(WireNode prev, WireNode wire, WireNode next) {
 +        prev.next = wire;
-+        wire.next = next;
-+
 +        wire.prev = prev;
++
++        wire.next = next;
 +        next.prev = wire;
 +    }
 +
@@ -1900,7 +1905,7 @@ index f7eb3bf48d4fb5b3bd4308482cedf35cf279e278..d3c9bfce60ab8c041ffe4d03270eb6fc
  
          EntityCallbacks() {}
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index a59ceae63712e7f0c95b80822d50edb60f28cd8f..21c4f7d61ddb34053ad1fb1b711afe4028c8d99e 100644
+index a59ceae63712e7f0c95b80822d50edb60f28cd8f..9b5a203e0a868cf29b0229f5265c39d6245c6410 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -1590,4 +1590,15 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -1912,7 +1917,7 @@ index a59ceae63712e7f0c95b80822d50edb60f28cd8f..21c4f7d61ddb34053ad1fb1b711afe40
 +    public alternate.current.wire.WireHandler getWireHandler() {
 +        // This method is overridden in ServerLevel.
 +        // Since Paper is a server platform there is no risk
-+        // of this implementation being called. It is here
++        // of this implementation being called. It is here 
 +        // only so this method can be called without casting
 +        // an instance of Level to ServerLevel.
 +        return null;
@@ -2097,24 +2102,16 @@ index 101317912b8299f5be406b75c19cfddb30c1f3f3..4b2376896f35efaed8f7a1dd9af242d2
      public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
          return state.getSignal(world, pos, direction);
 diff --git a/src/main/java/net/minecraft/world/level/block/PoweredBlock.java b/src/main/java/net/minecraft/world/level/block/PoweredBlock.java
-index 0afffc33f3be221a28c62115f493808aeffb1bd8..def39cd02da68b9be1ecfa5ae70119ef862cd079 100644
+index 0afffc33f3be221a28c62115f493808aeffb1bd8..0bd23df47085d578102a28157e309b585f4231f8 100644
 --- a/src/main/java/net/minecraft/world/level/block/PoweredBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/PoweredBlock.java
-@@ -3,6 +3,7 @@ package net.minecraft.world.level.block;
- import net.minecraft.core.BlockPos;
- import net.minecraft.core.Direction;
- import net.minecraft.world.level.BlockGetter;
-+import net.minecraft.world.level.Level;
- import net.minecraft.world.level.block.state.BlockBehaviour;
- import net.minecraft.world.level.block.state.BlockState;
- 
-@@ -16,6 +17,13 @@ public class PoweredBlock extends Block {
+@@ -16,6 +16,13 @@ public class PoweredBlock extends Block {
          return true;
      }
  
 +    // Paper start - optimize redstone (Alternate Current)
 +    @Override
-+    public boolean isSignalSourceTo(Level level, BlockPos pos, BlockState state, Direction dir) {
++    public boolean isSignalSourceTo(net.minecraft.world.level.Level level, BlockPos pos, BlockState state, Direction dir) {
 +        return true;
 +    }
 +    // Paper end
@@ -2123,18 +2120,10 @@ index 0afffc33f3be221a28c62115f493808aeffb1bd8..def39cd02da68b9be1ecfa5ae70119ef
      public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
          return 15;
 diff --git a/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java b/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java
-index cdc040c657bfc70bd5b2a2d8251d2b2a2e94ab55..3ecb111b3970af88aa64c88570b836563891024a 100644
+index cdc040c657bfc70bd5b2a2d8251d2b2a2e94ab55..2a37cfc37876d1412aece7a6eab5665921941d4b 100644
 --- a/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java
-@@ -1,6 +1,7 @@
- package net.minecraft.world.level.block;
- 
- import com.destroystokyo.paper.PaperConfig;
-+import com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation;
- import com.destroystokyo.paper.util.RedstoneWireTurbo;
- import com.google.common.collect.ImmutableMap;
- import com.google.common.collect.Maps;
-@@ -258,7 +259,7 @@ public class RedStoneWireBlock extends Block {
+@@ -258,7 +258,7 @@ public class RedStoneWireBlock extends Block {
          return floor.isFaceSturdy(world, pos, Direction.UP) || floor.is(Blocks.HOPPER);
      }
  
@@ -2143,49 +2132,13 @@ index cdc040c657bfc70bd5b2a2d8251d2b2a2e94ab55..3ecb111b3970af88aa64c88570b83656
      // The bulk of the new functionality is found in RedstoneWireTurbo.java
      RedstoneWireTurbo turbo = new RedstoneWireTurbo(this);
  
-@@ -268,7 +269,7 @@ public class RedStoneWireBlock extends Block {
-      * Note: Added 'source' argument so as to help determine direction of information flow
-      */
-     private void updateSurroundingRedstone(Level worldIn, BlockPos pos, BlockState state, BlockPos source) {
--        if (worldIn.paperConfig.useEigencraftRedstone) {
-+        if (worldIn.paperConfig.redstoneImplementation == RedstoneImplementation.EIGENCRAFT) {
-             turbo.updateSurroundingRedstone(worldIn, pos, state, source);
-             return;
-         }
-@@ -292,7 +293,7 @@ public class RedStoneWireBlock extends Block {
-         int k = worldIn.getBestNeighborSignal(pos1);
-         this.shouldSignal = true;
- 
--        if (!worldIn.paperConfig.useEigencraftRedstone) {
-+        if (worldIn.paperConfig.redstoneImplementation == RedstoneImplementation.VANILLA) {
-             // This code is totally redundant to if statements just below the loop.
-             if (k > 0 && k > j - 1) {
-                 j = k;
-@@ -306,7 +307,7 @@ public class RedStoneWireBlock extends Block {
-         // redstone wire will be set to 'k'.  If 'k' is already 15, then nothing inside the
-         // following loop can affect the power level of the wire.  Therefore, the loop is
-         // skipped if k is already 15.
--        if (!worldIn.paperConfig.useEigencraftRedstone || k < 15) {
-+        if (worldIn.paperConfig.redstoneImplementation == RedstoneImplementation.VANILLA || k < 15) {
-             for (Direction enumfacing : Direction.Plane.HORIZONTAL) {
-                 BlockPos blockpos = pos1.relative(enumfacing);
-                 boolean flag = blockpos.getX() != pos2.getX() || blockpos.getZ() != pos2.getZ();
-@@ -325,7 +326,7 @@ public class RedStoneWireBlock extends Block {
-             }
-         }
- 
--        if (!worldIn.paperConfig.useEigencraftRedstone) {
-+        if (worldIn.paperConfig.redstoneImplementation == RedstoneImplementation.VANILLA) {
-             // The old code would decrement the wire value only by 1 at a time.
-             if (l > j) {
-                 j = l - 1;
-@@ -465,7 +466,13 @@ public class RedStoneWireBlock extends Block {
+@@ -465,7 +465,13 @@ public class RedStoneWireBlock extends Block {
      @Override
      public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
          if (!oldState.is(state.getBlock()) && !world.isClientSide) {
 -            this.updateSurroundingRedstone(world, pos, state, null); // Paper - Optimize redstone
 +            // Paper start - optimize redstone - replace call to updatePowerStrength
-+            if (world.paperConfig.redstoneImplementation == RedstoneImplementation.ALTERNATE_CURRENT) {
++            if (world.paperConfig.redstoneImplementation == com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation.ALTERNATE_CURRENT) {
 +                world.getWireHandler().onWireAdded(pos); // Alternate Current
 +            } else {
 +                this.updateSurroundingRedstone(world, pos, state, null); // vanilla/Eigencraft
@@ -2194,13 +2147,13 @@ index cdc040c657bfc70bd5b2a2d8251d2b2a2e94ab55..3ecb111b3970af88aa64c88570b83656
              Iterator iterator = Direction.Plane.VERTICAL.iterator();
  
              while (iterator.hasNext()) {
-@@ -492,7 +499,13 @@ public class RedStoneWireBlock extends Block {
+@@ -492,7 +498,13 @@ public class RedStoneWireBlock extends Block {
                      world.updateNeighborsAt(pos.relative(enumdirection), this);
                  }
  
 -                this.updateSurroundingRedstone(world, pos, state, null); // Paper - Optimize redstone
 +                // Paper start - optimize redstone - replace call to updatePowerStrength
-+                if (world.paperConfig.redstoneImplementation == RedstoneImplementation.ALTERNATE_CURRENT) {
++                if (world.paperConfig.redstoneImplementation == com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation.ALTERNATE_CURRENT) {
 +                    world.getWireHandler().onWireRemoved(pos, state); // Alternate Current
 +                } else {
 +                    this.updateSurroundingRedstone(world, pos, state, null); // vanilla/Eigencraft
@@ -2209,13 +2162,13 @@ index cdc040c657bfc70bd5b2a2d8251d2b2a2e94ab55..3ecb111b3970af88aa64c88570b83656
                  this.updateNeighborsOfNeighboringWires(world, pos);
              }
          }
-@@ -526,8 +539,14 @@ public class RedStoneWireBlock extends Block {
+@@ -526,8 +538,14 @@ public class RedStoneWireBlock extends Block {
      @Override
      public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
          if (!world.isClientSide) {
 +            // Paper start - optimize redstone (Alternate Current)
 +            // Alternate Current handles breaking of redstone wires in the WireHandler.
-+            if (world.paperConfig.redstoneImplementation == RedstoneImplementation.ALTERNATE_CURRENT) {
++            if (world.paperConfig.redstoneImplementation == com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation.ALTERNATE_CURRENT) {
 +                world.getWireHandler().onWireUpdated(pos);
 +            } else
 +            // Paper end
@@ -2303,29 +2256,21 @@ index 18e8dbd7971e83a69953d203b02d8cd8d456e434..e8d2499e1c203e8f90a99a682968cf7c
      protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
          builder.add(OUTPUT_POWER);
 diff --git a/src/main/java/net/minecraft/world/level/block/TrappedChestBlock.java b/src/main/java/net/minecraft/world/level/block/TrappedChestBlock.java
-index 184c70cd2954f4904518c3fee2a377d9c4e81cc3..78a3d810cbb4c0da8c59a9b225e9241945520586 100644
+index 184c70cd2954f4904518c3fee2a377d9c4e81cc3..316fd2758a3a981fd1a5e3603a4b7a064270f7fb 100644
 --- a/src/main/java/net/minecraft/world/level/block/TrappedChestBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/TrappedChestBlock.java
-@@ -7,6 +7,7 @@ import net.minecraft.stats.Stat;
- import net.minecraft.stats.Stats;
- import net.minecraft.util.Mth;
- import net.minecraft.world.level.BlockGetter;
-+import net.minecraft.world.level.Level;
- import net.minecraft.world.level.block.entity.BlockEntity;
- import net.minecraft.world.level.block.entity.BlockEntityType;
- import net.minecraft.world.level.block.entity.ChestBlockEntity;
-@@ -36,6 +37,18 @@ public class TrappedChestBlock extends ChestBlock {
+@@ -36,6 +36,18 @@ public class TrappedChestBlock extends ChestBlock {
          return true;
      }
  
 +    // Paper start - optimize redstone (Alternate Current)
 +    @Override
-+    public boolean isSignalSourceTo(Level level, BlockPos pos, BlockState state, Direction dir) {
++    public boolean isSignalSourceTo(net.minecraft.world.level.Level level, BlockPos pos, BlockState state, Direction dir) {
 +        return true;
 +    }
 +
 +    @Override
-+    public boolean isDirectSignalSourceTo(Level level, BlockPos pos, BlockState state, Direction dir) {
++    public boolean isDirectSignalSourceTo(net.minecraft.world.level.Level level, BlockPos pos, BlockState state, Direction dir) {
 +        return dir == Direction.UP;
 +    }
 +    // Paper end
@@ -2357,7 +2302,7 @@ index 0cfa1abca2c5744a4147b05905983ae4acaa569a..eacf71b3c01f3f517ea7e407a386247c
      public BlockState rotate(BlockState state, Rotation rotation) {
          return (BlockState) state.setValue(TripWireHookBlock.FACING, rotation.rotate((Direction) state.getValue(TripWireHookBlock.FACING)));
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 83d813025efca5846538e36508a5d4fe38b02108..f8cfb18fa0cc9fbcc605abefc2af4cfc0b24bca0 100644
+index 83d813025efca5846538e36508a5d4fe38b02108..1e4619262b4218c5037b385a02923487616810ce 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -69,7 +69,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
@@ -2365,7 +2310,7 @@ index 83d813025efca5846538e36508a5d4fe38b02108..f8cfb18fa0cc9fbcc605abefc2af4cfc
  public abstract class BlockBehaviour {
  
 -    protected static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP};
-+    public static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP};
++    public static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP}; // Paper - public
      protected final Material material;
      public final boolean hasCollision;
      protected final float explosionResistance;
