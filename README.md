@@ -28,7 +28,7 @@ Has some optimizations from [Lithium](https://github.com/jellysquid3/lithium-fab
 
 ## Downloads
 
-The latest JAR file can be downloaded from the [GitHub CI](https://github.com/KurumiFake/Fiadelity/raw/releases/1.17.1/Fiadelity-1.17.1-R0.1-SNAPSHOT.jar). You can also clone this repository and build it yourself.
+The latest JAR file can be downloaded from the Release section. You can also clone this repository and build it yourself.
 
 **Builds require at least Java 16!**
 

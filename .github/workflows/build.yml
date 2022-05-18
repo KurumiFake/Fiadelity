@@ -32,5 +32,5 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ github.run_number }}"
           prerelease: false
-          title: "mpe ${{ steps.relInfo.outputs.mcversion }} ${{ steps.relInfo.outputs.date }} ${{ steps.relInfo.outputs.shortHash }}"
-          files: ./build/libs/mpe-paperclip-${{ steps.relInfo.outputs.version }}-reobf.jar
+          title: "Fiadelity ${{ steps.relInfo.outputs.mcversion }} ${{ steps.relInfo.outputs.date }} ${{ steps.relInfo.outputs.shortHash }}"
+          files: ./build/libs/Fiadelity-1.17.1-R0.1-SNAPSHOT.jar
