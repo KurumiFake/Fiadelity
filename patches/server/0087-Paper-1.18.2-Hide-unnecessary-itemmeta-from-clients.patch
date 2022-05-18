@@ -108,3 +108,43 @@ index 6d9f32397f792b9c33b1f3f7903c01de54f70f73..7ff6c92c23c5ee9a864d5b4396e818bc
      // Paper start - prevent oversized data
      public static ItemStack sanitizeItemStack(final ItemStack itemStack, final boolean copyItemStack) {
          if (itemStack.isEmpty() || !itemStack.hasTag()) {
+diff --git a/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java b/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java
+index 2a37cfc37876d1412aece7a6eab5665921941d4b..f734580d475012cfe3eb867d547a2b6eb3eb1b82 100644
+--- a/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/RedStoneWireBlock.java
+@@ -268,7 +268,7 @@ public class RedStoneWireBlock extends Block {
+      * Note: Added 'source' argument so as to help determine direction of information flow
+      */
+     private void updateSurroundingRedstone(Level worldIn, BlockPos pos, BlockState state, BlockPos source) {
+-        if (worldIn.paperConfig.useEigencraftRedstone) {
++        if (worldIn.paperConfig.redstoneImplementation == com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation.EIGENCRAFT) {
+             turbo.updateSurroundingRedstone(worldIn, pos, state, source);
+             return;
+         }
+@@ -292,7 +292,7 @@ public class RedStoneWireBlock extends Block {
+         int k = worldIn.getBestNeighborSignal(pos1);
+         this.shouldSignal = true;
+ 
+-        if (!worldIn.paperConfig.useEigencraftRedstone) {
++        if (worldIn.paperConfig.redstoneImplementation == com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation.VANILLA) {
+             // This code is totally redundant to if statements just below the loop.
+             if (k > 0 && k > j - 1) {
+                 j = k;
+@@ -306,7 +306,7 @@ public class RedStoneWireBlock extends Block {
+         // redstone wire will be set to 'k'.  If 'k' is already 15, then nothing inside the
+         // following loop can affect the power level of the wire.  Therefore, the loop is
+         // skipped if k is already 15.
+-        if (!worldIn.paperConfig.useEigencraftRedstone || k < 15) {
++        if (worldIn.paperConfig.redstoneImplementation == com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation.VANILLA || k < 15) {
+             for (Direction enumfacing : Direction.Plane.HORIZONTAL) {
+                 BlockPos blockpos = pos1.relative(enumfacing);
+                 boolean flag = blockpos.getX() != pos2.getX() || blockpos.getZ() != pos2.getZ();
+@@ -325,7 +325,7 @@ public class RedStoneWireBlock extends Block {
+             }
+         }
+ 
+-        if (!worldIn.paperConfig.useEigencraftRedstone) {
++        if (worldIn.paperConfig.redstoneImplementation == com.destroystokyo.paper.PaperWorldConfig.RedstoneImplementation.VANILLA) {
+             // The old code would decrement the wire value only by 1 at a time.
+             if (l > j) {
+                 j = l - 1;
