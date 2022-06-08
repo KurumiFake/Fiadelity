@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joseph Burton <burtonjae@hotmail.co.uk>
+Date: Sun, 5 Jun 2022 22:49:42 +0100
+Subject: [PATCH] (Paper-1.18.2) [DataConverter] Fix generator options parsing
+
+
+diff --git a/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1506.java b/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1506.java
+index d67a44b7154825efd3e3fd50e0e708ef839866f7..ef679762aec326e5e1310390bca46971b548e7cd 100644
+--- a/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1506.java
++++ b/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1506.java
+@@ -119,7 +119,7 @@ public final class V1506 {
+                 if ("flat".equalsIgnoreCase(generatorName)) {
+                     data.setMap("generatorOptions", V1506.convert(generatorOptions == null ? "" : generatorOptions));
+                 } else if ("buffet".equalsIgnoreCase(generatorName) && generatorOptions != null) {
+-                    data.setMap("generatorOptions", JsonTypeUtil.convertJsonToNBT(new JsonMapType(GsonHelper.parse(generatorName, true), false)));
++                    data.setMap("generatorOptions", JsonTypeUtil.convertJsonToNBT(new JsonMapType(GsonHelper.parse(generatorOptions, true), false)));
+                 }
+                 return null;
+             }

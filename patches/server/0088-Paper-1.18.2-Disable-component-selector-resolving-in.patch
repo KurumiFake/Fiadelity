@@ -1,0 +1,71 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Nassim Jahnke <jahnke.nassim@gmail.com>
+Date: Thu, 2 Jun 2022 20:35:58 +0200
+Subject: [PATCH] (Paper-1.18.2) Disable component selector resolving in books
+ by default
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+index 7c61ae257323c7f0a0b2e43f64fb540c22c47104..68cb4ea855f9bfe4d10603f590a199f98ba2b8d5 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
++++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+@@ -681,4 +681,9 @@ public class PaperConfig {
+     private static void sendFullPosForHardCollidingEntities() {
+         sendFullPosForHardCollidingEntities = getBoolean("settings.send-full-pos-for-hard-colliding-entities", true);
+     }
++
++    public static boolean resolveSelectorsInBooks;
++    private static void resolveSelectorsInBooks() {
++        resolveSelectorsInBooks = getBoolean("settings.resolve-selectors-in-books", false);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/world/item/WrittenBookItem.java b/src/main/java/net/minecraft/world/item/WrittenBookItem.java
+index de11f8b4a783e7aa6029693f6812c950649fe88c..48b093756520dff174f24a0dd2d31942dd465fe3 100644
+--- a/src/main/java/net/minecraft/world/item/WrittenBookItem.java
++++ b/src/main/java/net/minecraft/world/item/WrittenBookItem.java
+@@ -113,25 +113,42 @@ public class WrittenBookItem extends Item {
+ 
+     public static boolean resolveBookComponents(ItemStack book, @Nullable CommandSourceStack commandSource, @Nullable Player player) {
+         CompoundTag compoundTag = book.getTag();
+-        if (compoundTag != null && !compoundTag.getBoolean("resolved")) {
++        if (com.destroystokyo.paper.PaperConfig.resolveSelectorsInBooks && compoundTag != null && !compoundTag.getBoolean("resolved")) { // Paper
+             compoundTag.putBoolean("resolved", true);
+             if (!makeSureTagIsValid(compoundTag)) {
+                 return false;
+             } else {
+                 ListTag listTag = compoundTag.getList("pages", 8);
++                // Paper start - backport length limit
++                ListTag newPages = new ListTag();
+ 
+                 for(int i = 0; i < listTag.size(); ++i) {
+-                    listTag.set(i, (Tag)StringTag.valueOf(resolvePage(commandSource, player, listTag.getString(i))));
++                    String resolvedPage = resolvePage(commandSource, player, listTag.getString(i));
++                    if (resolvedPage.length() > 32767) {
++                        return false;
++                    }
++
++                    newPages.add(i, StringTag.valueOf(resolvedPage));
+                 }
+ 
+                 if (compoundTag.contains("filtered_pages", 10)) {
+                     CompoundTag compoundTag2 = compoundTag.getCompound("filtered_pages");
++                    CompoundTag newFilteredPages = new CompoundTag();
+ 
+                     for(String string : compoundTag2.getAllKeys()) {
+-                        compoundTag2.putString(string, resolvePage(commandSource, player, compoundTag2.getString(string)));
++                        String resolvedPage = resolvePage(commandSource, player, compoundTag2.getString(string));
++                        if (resolvedPage.length() > 32767) {
++                            return false;
++                        }
++
++                        newFilteredPages.putString(string, resolvedPage);
+                     }
++
++                    compoundTag.put("filtered_pages", newFilteredPages);
+                 }
+ 
++                compoundTag.put("pages", newPages);
++                // Paper end
+                 return true;
+             }
+         } else {

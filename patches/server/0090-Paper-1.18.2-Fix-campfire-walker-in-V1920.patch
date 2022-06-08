@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joseph Burton <burtonjae@hotmail.co.uk>
+Date: Mon, 6 Jun 2022 17:51:12 -0700
+Subject: [PATCH] (Paper-1.18.2) Fix campfire walker in V1920
+
+
+diff --git a/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1920.java b/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1920.java
+index 264264b4f8b9f3b365a5c3e971f817b42359556d..224d35620e9d9e65f0642fdb13f80fcb2667a2ee 100644
+--- a/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1920.java
++++ b/src/main/java/ca/spottedleaf/dataconverter/minecraft/versions/V1920.java
+@@ -70,6 +70,6 @@ public final class V1920 {
+             }
+         });
+ 
+-        MCTypeRegistry.ENTITY.addWalker(VERSION, "minecraft:campfire", new DataWalkerItemLists("Items"));
++        MCTypeRegistry.TILE_ENTITY.addWalker(VERSION, "minecraft:campfire", new DataWalkerItemLists("Items"));
+     }
+ }
