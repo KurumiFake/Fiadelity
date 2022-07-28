@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     remapper("net.fabricmc:tiny-remapper:0.8.1:fat")
-    decompiler("org.quiltmc.quiltflower:1.8.0")
+    decompiler("org.quiltmc.quiltflower:1.8.1")
     paperclip("io.papermc:paperclip:2.0.1")
 }
 
