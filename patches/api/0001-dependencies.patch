@@ -5,9 +5,18 @@ Subject: [PATCH] dependencies
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 92b612126a6bac0b89198a92bbb73b742ec9d064..eb48f2d7e324ef9b9ab3237f9ee47ceb1df0e071 100644
+index 92b612126a6bac0b89198a92bbb73b742ec9d064..655e12f0de8587ee68dd6a1e2e725381eff9a8c5 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
+@@ -10,7 +10,7 @@ java {
+     withJavadocJar()
+ }
+ 
+-val adventureVersion = "4.9.3"
++val adventureVersion = "4.11.0"
+ val apiAndDocs: Configuration by configurations.creating {
+     attributes {
+         attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.DOCUMENTATION))
 @@ -26,41 +26,42 @@ configurations.api {
  dependencies {
      // api dependencies are listed transitively to API consumers
@@ -31,7 +40,7 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..eb48f2d7e324ef9b9ab3237f9ee47ceb
 -    api("org.slf4j:slf4j-api:1.7.30") // Paper
 +    api("org.apache.logging.log4j:log4j-api:2.17.2") // Paper
 +    api("org.slf4j:slf4j-api:1.7.36") // Paper
-+    api("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Purpur
++    api("net.kyori:adventure-text-minimessage:4.11.0") // Purpur // Fiadelity
  
 -    implementation("org.ow2.asm:asm:9.1")
 -    implementation("org.ow2.asm:asm-commons:9.1")
