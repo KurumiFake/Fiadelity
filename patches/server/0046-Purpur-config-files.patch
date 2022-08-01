@@ -6,41 +6,6 @@ Subject: [PATCH] Purpur config files
 Original code by PurpurMC, licensed under MIT.
 You can find the original code on https://github.com/PurpurMC/Purpur
 
-diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-index 71e29d29ed5c2d61832e2f124967bb223708406f..224669ecaad37ac2f16900700eea40ef52d938a5 100644
---- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
-+++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-@@ -236,6 +236,30 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
-         return this.anchor;
-     }
- 
-+    // Purpur start
-+    public void sendSuccess(@Nullable String message) {
-+        sendSuccess(message, false);
-+    }
-+
-+    public void sendSuccess(@Nullable String message, boolean broadcastToOps) {
-+        if (message == null) {
-+            return;
-+        }
-+        sendSuccess(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(message), broadcastToOps);
-+    }
-+
-+    public void sendSuccess(@Nullable net.kyori.adventure.text.Component message) {
-+        sendSuccess(message, false);
-+    }
-+
-+    public void sendSuccess(@Nullable net.kyori.adventure.text.Component message, boolean broadcastToOps) {
-+        if (message == null) {
-+            return;
-+        }
-+        sendSuccess(io.papermc.paper.adventure.PaperAdventure.asVanilla(message), broadcastToOps);
-+    }
-+    // Purpur end
-+
-     public void sendSuccess(Component message, boolean broadcastToOps) {
-         if (this.source.acceptsSuccess() && !this.silent) {
-             this.source.sendMessage(message, Util.NIL_UUID);
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 index 6934db63ff9134c28a95f59f0c402fe861f9d303..b089eaced634931ed4946a296183c6d18d7d13ab 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
@@ -62,7 +27,7 @@ index 6934db63ff9134c28a95f59f0c402fe861f9d303..b089eaced634931ed4946a296183c6d1
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 3d1ce45115b15bfac2676531aec928b11a0c1c91..7322ce759bf297e177c7ff4aaf7a3ecd9911e345 100644
+index 22e58fa146f7e21ccc0bdc79c82fdd1b2ffc8305..5e1617022fcfd38584cce36759064b2d1d80bd4e 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -171,6 +171,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
