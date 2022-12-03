@@ -5,11 +5,11 @@ Subject: [PATCH] Remove Flare
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 158305b02d7a88f3cba7990a7f21f266738c97fc..9ed809174c77cffacbf1a686da0925699ea534fa 100644
+index f9a66277f3e425b8c70f4cae163ff4f174010a62..b1b56811ddf72ca6c63cb335ceae05e54dae2648 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -56,7 +56,6 @@ dependencies {
-     implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8") { // Airplane - more config
+     implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8.3") { // Airplane - more config
          exclude(group="org.yaml", module="snakeyaml") // exclude snakeyaml dependency because its old (1.26)
      } // Airplane - more config
 -    implementation("com.github.technove:Flare:34637f3f87") // Airplane - flare

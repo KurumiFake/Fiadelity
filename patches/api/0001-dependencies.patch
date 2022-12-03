@@ -5,7 +5,7 @@ Subject: [PATCH] dependencies
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 92b612126a6bac0b89198a92bbb73b742ec9d064..655e12f0de8587ee68dd6a1e2e725381eff9a8c5 100644
+index 92b612126a6bac0b89198a92bbb73b742ec9d064..0ef504f06a901d8c67f0338644873392bc234148 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -10,7 +10,7 @@ java {
@@ -27,7 +27,7 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..655e12f0de8587ee68dd6a1e2e725381
 +    api("com.google.code.gson:gson:2.9.0") // Paper - bump
      api("net.md-5:bungeecord-chat:1.16-R0.4")
 -    api("org.yaml:snakeyaml:1.28")
-+    api("org.yaml:snakeyaml:1.30")
++    api("org.yaml:snakeyaml:1.33")
      api("com.googlecode.json-simple:json-simple:1.1.1") // Paper
 -    api("it.unimi.dsi:fastutil:8.2.2")
 +    api("it.unimi.dsi:fastutil:8.5.8")
@@ -44,8 +44,8 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..655e12f0de8587ee68dd6a1e2e725381
  
 -    implementation("org.ow2.asm:asm:9.1")
 -    implementation("org.ow2.asm:asm-commons:9.1")
-+    implementation("org.ow2.asm:asm:9.3")
-+    implementation("org.ow2.asm:asm-commons:9.3")
++    implementation("org.ow2.asm:asm:9.4")
++    implementation("org.ow2.asm:asm-commons:9.4")
  
 -    compileOnly("org.apache.maven:maven-resolver-provider:3.8.1")
 -    compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.0")
@@ -71,7 +71,7 @@ index 92b612126a6bac0b89198a92bbb73b742ec9d064..655e12f0de8587ee68dd6a1e2e725381
 +    testImplementation("junit:junit:4.13.2")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
 -    testImplementation("org.ow2.asm:asm-tree:9.2")
-+    testImplementation("org.ow2.asm:asm-tree:9.3")
++    testImplementation("org.ow2.asm:asm-tree:9.4")
  }
  
  configure<PublishingExtension> {

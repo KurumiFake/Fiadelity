@@ -1,0 +1,112 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kevin Raneri <kevin.raneri@gmail.com>
+Date: Fri, 18 Nov 2022 16:32:38 -0500
+Subject: [PATCH] (Pufferfish-1.19.2) Remove busy wait in async execution
+ utility
+
+original commit:
+https://github.com/pufferfish-gg/Pufferfish/commit/53295bd78f9503eac253e8eee9d0fc6ae7d7df5b
+
+diff --git a/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java b/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
+index 9d6dc2c80945bec9bea74714c657c7a2e0bdde9e..f2796a9e161a425ad62f656c8bbfffb1097dbe7f 100644
+--- a/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
++++ b/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
+@@ -3,20 +3,21 @@ package gg.pufferfish.pufferfish.util;
+ import com.google.common.collect.Queues;
+ import gg.pufferfish.pufferfish.PufferfishLogger;
+ import java.util.Queue;
+-import java.util.concurrent.locks.LockSupport;
+-import java.util.function.BooleanSupplier;
++import java.util.concurrent.locks.Condition;
++import java.util.concurrent.locks.Lock;
++import java.util.concurrent.locks.ReentrantLock;
+ import java.util.logging.Level;
+ 
+ public class AsyncExecutor implements Runnable {
+ 	
+-	private Queue<Runnable> jobs = Queues.newConcurrentLinkedQueue();
++	private final Queue<Runnable> jobs = Queues.newArrayDeque();
++	private final Lock mutex = new ReentrantLock();
++	private final Condition cond = mutex.newCondition();
+ 	private final Thread thread;
+-	private final BooleanSupplier shouldRun;
+ 	private volatile boolean killswitch = false;
+ 	
+-	public AsyncExecutor(String threadName, BooleanSupplier shouldRun) {
++	public AsyncExecutor(String threadName) {
+ 		this.thread = new Thread(this, threadName);
+-		this.shouldRun = shouldRun;
+ 	}
+ 	
+ 	public void start() {
+@@ -25,26 +26,48 @@ public class AsyncExecutor implements Runnable {
+ 	
+ 	public void kill() {
+ 		killswitch = true;
++		cond.signalAll();
+ 	}
+ 	
+ 	public void submit(Runnable runnable) {
+-		jobs.offer(runnable);
++		mutex.lock();
++		try {
++			jobs.offer(runnable);
++			cond.signalAll();
++		} finally {
++			mutex.unlock();
++		}
+ 	}
+ 	
+ 	@Override
+ 	public void run() {
+ 		while (!killswitch) {
+-			if (shouldRun.getAsBoolean()) {
+-				try {
+-					Runnable runnable;
+-					while ((runnable = jobs.poll()) != null) {
+-						runnable.run();
+-					}
+-				} catch (Exception e) {
+-					PufferfishLogger.LOGGER.log(Level.SEVERE, e, () -> "Failed to execute async job for thread " + thread.getName());
++			try {
++				Runnable runnable = takeRunnable();
++				if (runnable != null) {
++					runnable.run();
+ 				}
++			} catch (InterruptedException e) {
++				Thread.currentThread().interrupt();
++			} catch (Exception e) {
++				PufferfishLogger.LOGGER.log(Level.SEVERE, e, () -> "Failed to execute async job for thread " + thread.getName());
++			}
++		}
++	}
++	
++	private Runnable takeRunnable() throws InterruptedException {
++		mutex.lock();
++		try {
++			while (jobs.isEmpty() && !killswitch) {
++				cond.await();
+ 			}
+ 			LockSupport.parkNanos("executing tasks", 1000L);
++			
++			if (jobs.isEmpty()) return null; // We've set killswitch
++			
++			return jobs.remove();
++		} finally {
++			mutex.unlock();
+ 		}
+ 	}
+ 	
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 2bc597d38139c0806711c8a25ad3c6287cd920ae..59374dcacc3593daa2c087bceeb240d078283fb5 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -315,7 +315,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+     public volatile Thread shutdownThread; // Paper
+     public volatile boolean abnormalExit = false; // Paper
+     
+-    public gg.pufferfish.pufferfish.util.AsyncExecutor mobSpawnExecutor = new gg.pufferfish.pufferfish.util.AsyncExecutor("MobSpawning", () -> true); // Pufferfish - optimize mob spawning
++    public gg.pufferfish.pufferfish.util.AsyncExecutor mobSpawnExecutor = new gg.pufferfish.pufferfish.util.AsyncExecutor("MobSpawning"); // Pufferfish - optimize mob spawning
+ 
+     public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
+         AtomicReference<S> atomicreference = new AtomicReference();

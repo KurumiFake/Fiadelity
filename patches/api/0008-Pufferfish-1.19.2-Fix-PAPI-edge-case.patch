@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kevin Raneri <kevin.raneri@gmail.com>
+Date: Mon, 8 Aug 2022 20:55:55 -0400
+Subject: [PATCH] (Pufferfish-1.19.2) Fix PAPI edge-case
+
+original commit:
+https://github.com/pufferfish-gg/Pufferfish/commit/4882a952ea5fcb12cf6f8f164a8010fc2f85a25c
+
+diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+index 4c84e3a5c983b7f8fe5515fff6fcfa64106150d2..257cb220c63009c279fab0a27c531711b5aa6223 100644
+--- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
++++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+@@ -208,6 +208,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+             classes.put(name, result);
+         }
+ 
++        if (result == null) throw new ClassNotFoundException(name); // Pufferfish
+         return result;
+     }
+ 
