@@ -31,7 +31,7 @@ index 0bbe944fad76e4c90f1cfe5aecaa53b82da79ee1..cbee7e27efb28af6cc4147a454f78e96
      public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // used where needed
      public final gg.airplane.entity.CollisionCache collisionCache = new gg.airplane.entity.CollisionCache(this);
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 8bf0383a3d6f83846821fa5f4cf92c5adc39d880..cd8be8f9099fa48aecd2eb4877d421caff05a143 100644
+index 8bf0383a3d6f83846821fa5f4cf92c5adc39d880..0fb83bc712767e99eafc7bddbb6590492cf971f9 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -217,12 +217,16 @@ public class ActivationRange
@@ -40,7 +40,7 @@ index 8bf0383a3d6f83846821fa5f4cf92c5adc39d880..cd8be8f9099fa48aecd2eb4877d421ca
                  if (gg.airplane.AirplaneConfig.dearEnabled && entity.getType().dabEnabled) {
 +                    if (!entity.activatedPriorityReset) {
 +                        entity.activatedPriorityReset = true;
-+                        entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio;
++                        entity.activatedPriority = gg.airplane.AirplaneConfig.maximumActivationPrio;
 +                    }
                      Vec3 playerVec = player.position();
                      Vec3 entityVec = entity.position();
