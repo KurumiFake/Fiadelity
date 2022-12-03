@@ -8,7 +8,7 @@ original commit:
 https://github.com/pufferfish-gg/Pufferfish/commit/53295bd78f9503eac253e8eee9d0fc6ae7d7df5b
 
 diff --git a/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java b/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
-index 9d6dc2c80945bec9bea74714c657c7a2e0bdde9e..f2796a9e161a425ad62f656c8bbfffb1097dbe7f 100644
+index 9d6dc2c80945bec9bea74714c657c7a2e0bdde9e..8e5323d5d9af25c8a85c4b34a6be76cfc54384cf 100644
 --- a/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
 +++ b/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
 @@ -3,20 +3,21 @@ package gg.pufferfish.pufferfish.util;
@@ -39,7 +39,7 @@ index 9d6dc2c80945bec9bea74714c657c7a2e0bdde9e..f2796a9e161a425ad62f656c8bbfffb1
  	}
  	
  	public void start() {
-@@ -25,26 +26,48 @@ public class AsyncExecutor implements Runnable {
+@@ -25,26 +26,47 @@ public class AsyncExecutor implements Runnable {
  	
  	public void kill() {
  		killswitch = true;
@@ -87,7 +87,7 @@ index 9d6dc2c80945bec9bea74714c657c7a2e0bdde9e..f2796a9e161a425ad62f656c8bbfffb1
 +			while (jobs.isEmpty() && !killswitch) {
 +				cond.await();
  			}
- 			LockSupport.parkNanos("executing tasks", 1000L);
+-			LockSupport.parkNanos("executing tasks", 1000L);
 +			
 +			if (jobs.isEmpty()) return null; // We've set killswitch
 +			
